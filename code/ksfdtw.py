@@ -20,8 +20,9 @@ def ed(ts1, ts2, squared = False):
     else:
         return dist
 
-def pyts_dtw(ts1, ts2, r=0.1):
-    return _pyts_dtw_p(ts1, ts2, method='sakoechiba', options={'window_size': r})
+def pyts_dtw(ts1, ts2, r=10):
+    return _pyts_dtw_p(ts1, ts2, method='fast', options={'radius': r})
+    # return _pyts_dtw_p(ts1, ts2, method='sakoechiba', options={'window_size': r})
 
 def nearest_neighbor_interpolation(ts, L):
     ts = np.asarray(ts)
@@ -34,7 +35,7 @@ def linear_interpolation(array: np.ndarray, new_len: int) -> np.ndarray:
     la = len(array)
     return np.interp(np.linspace(0, la - 1, num=new_len), np.arange(la), array)
 
-def us_usdtw_p(Q, C, l, distance_method="ed", r=0.1):
+def us_usdtw_p(Q, C, l, distance_method="ed", r=5):
     # Scaling both time series
     m = len(Q)
     n = len(C)
