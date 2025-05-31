@@ -1,3 +1,5 @@
+import numpy as np
+from pyts.metrics import dtw as _pyts_dtw_p 
 from dtaidistance import ed as dtaidistance_ed
 from dtaidistance import dtw, dtw_visualisation
 
@@ -84,10 +86,10 @@ def lb_keogh_envelope(ts, radius):
     return lower, upper
 
 ###
-import numpy as np
+
 import math
 
-from pyts.metrics import dtw as _pyts_dtw_p 
+
 
 def normalize(ts):
     mean = np.mean(ts)
