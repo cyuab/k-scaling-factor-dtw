@@ -1,41 +1,37 @@
-import numpy as np
-import math
+from dtaidistance import ed as dtaidistance_ed
+from dtaidistance import dtw, dtw_visualisation
 
-from pyts.metrics import dtw as _pyts_dtw_p 
+def dtai_ed(a, b, l=1, r=0.1):
+    if len(a) != len(b):
+        raise ValueError("a and b must have the same length")
+    # https://dtaidistance.readthedocs.io/en/latest/usage/ed.html
+    return dtaidistance_ed.distance(a, b)
 
-def hello_wolrd():
-    print("Hello World")
-
-def normalize(ts):
-    mean = np.mean(ts)
-    std = np.std(ts)
-    return (ts - mean) / std
-
-def ed(ts1, ts2, squared = False):
-    ts1 = np.array(ts1)
-    ts2 = np.array(ts2)
-    dist = np.sum((ts1 - ts2)**2)
-    if not squared:
-        return np.sqrt(dist)
+def dtai_dtw(a, b, l=1, r=0.1):
+    if isinstance(r, float):
+        # print("r is a float.")
+        minlen = min(len(a), len(b))
+        window = int(minlen * r)
+    elif isinstance(r, int):
+        # Do something when r is an int
+        # print("r is an integer.")
+        window=r
     else:
-        return dist
-
-def pyts_dtw(ts1, ts2, r=10):
-    return _pyts_dtw_p(ts1, ts2, method='fast', options={'radius': r})
-    # return _pyts_dtw_p(ts1, ts2, method='sakoechiba', options={'window_size': r})
-
-def nearest_neighbor_interpolation(ts, L):
-    ts = np.asarray(ts)
-    k = len(ts)
-    indices = [int(np.ceil(j * k / L)) - 1 for j in range(1, L + 1)]  # Why -1? 1-based (in the paper) to 0-based (default in Python)
-    return ts[indices]
+        raise ValueError("r must be either an integer or a float.")
+    return dtw.distance(a, b, window=window)
 
 # https://stackoverflow.com/questions/66934748/how-to-stretch-an-array-to-a-new-length-while-keeping-same-value-distribution
 def linear_interpolation(array: np.ndarray, new_len: int) -> np.ndarray:
     la = len(array)
     return np.interp(np.linspace(0, la - 1, num=new_len), np.arange(la), array)
 
-def us_usdtw_p(Q, C, l, distance_method="ed", r=5):
+def nearest_neighbor_interpolation(ts, new_len):
+    ts = np.asarray(ts)
+    k = len(ts)
+    indices = [int(np.ceil(j * k / new_len)) - 1 for j in range(1, new_len + 1)]  # Why -1? 1-based (in the paper) to 0-based (default in Python)
+    return ts[indices]
+
+def us_usdtw_p(Q, C, l, r, distance_method="ed"):
     # Scaling both time series
     m = len(Q)
     n = len(C)
@@ -46,21 +42,21 @@ def us_usdtw_p(Q, C, l, distance_method="ed", r=5):
 
     # Compute distance based on the chosen method
     if distance_method == 'dtw':
-        dist = pyts_dtw(Q_scaled, C_scaled, r)
+        dist = dtai_dtw(Q_scaled, C_scaled, l, r)
     elif distance_method == 'ed':
-        dist = ed(Q_scaled, C_scaled)
+        dist = dtai_ed(Q_scaled, C_scaled)
     else:
         raise ValueError(f"Unsupported distance method: {distance_method}")
 
     return dist
 
-def us_usdtw(Q, C, l, distance_method='ed', r=0.1):
+def us_usdtw(Q, C, l, r, distance_method='ed'):
     m = len(Q)
     n = len(C)
     best_so_far = np.inf
     for k in range(math.ceil(m/l), min(math.ceil(l*m), n)+1):
         C_prefix = C[:k]
-        dist = us_usdtw_p(Q, C_prefix, l, distance_method, r)
+        dist = us_usdtw_p(Q, C_prefix, l, r, distance_method)
         if dist < best_so_far:
             best_so_far = dist
             best_k = k
@@ -86,6 +82,29 @@ def lb_keogh_envelope(ts, radius):
         lower[i] = np.min(ts[start:end])
         upper[i] = np.max(ts[start:end])
     return lower, upper
+
+###
+import numpy as np
+import math
+
+from pyts.metrics import dtw as _pyts_dtw_p 
+
+def normalize(ts):
+    mean = np.mean(ts)
+    std = np.std(ts)
+    return (ts - mean) / std
+
+def pyts_dtw(ts1, ts2, r=10):
+    return _pyts_dtw_p(ts1, ts2, method='fast', options={'radius': r})
+    # return _pyts_dtw_p(ts1, ts2, method='sakoechiba', options={'window_size': r})
+
+
+
+
+
+
+
+
 
 
 
