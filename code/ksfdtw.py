@@ -2,6 +2,16 @@ import numpy as np
 from pyts.metrics import dtw as _pyts_dtw_p 
 from dtaidistance import ed as dtaidistance_ed
 from dtaidistance import dtw, dtw_visualisation
+import math
+
+def normalize(ts):
+    mean = np.mean(ts)
+    std = np.std(ts)
+    return (ts - mean) / std
+
+def pyts_dtw(ts1, ts2, r=0.1):
+    return _pyts_dtw_p(ts1, ts2, method='fast', options={'radius': r})
+    # return _pyts_dtw_p(ts1, ts2, method='sakoechiba', options={'window_size': r})
 
 def dtai_ed(a, b, l=1, r=0.1):
     if len(a) != len(b):
@@ -84,31 +94,3 @@ def lb_keogh_envelope(ts, radius):
         lower[i] = np.min(ts[start:end])
         upper[i] = np.max(ts[start:end])
     return lower, upper
-
-###
-
-import math
-
-
-
-def normalize(ts):
-    mean = np.mean(ts)
-    std = np.std(ts)
-    return (ts - mean) / std
-
-def pyts_dtw(ts1, ts2, r=10):
-    return _pyts_dtw_p(ts1, ts2, method='fast', options={'radius': r})
-    # return _pyts_dtw_p(ts1, ts2, method='sakoechiba', options={'window_size': r})
-
-
-
-
-
-
-
-
-
-
-
-
-
