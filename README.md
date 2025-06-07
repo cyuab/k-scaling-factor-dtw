@@ -1,4 +1,5 @@
-
+<!-- https://stackoverflow.com/questions/39777166/display-pdf-image-in-markdown -->
+<!-- for d in *.pdf ; do inkscape --without-gui --file=$d --export-plain-svg=${d%.*}.svg ; done -->
 ![Figure 1](figures/psdtw-intuition.pptx.svg)
 
 # Updates
