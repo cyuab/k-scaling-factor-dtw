@@ -1,6 +1,11 @@
+<object data="figures/psdtw-intuition.pptx.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="figures/psdtw-intuition.pptx.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
 # Updates
-- testing
-- testing 2
+- 2025=06-06 Submitted to ICDM 2025
 
 # Install
 ```
@@ -11,18 +16,15 @@ pip install pandas
 conda install -c conda-forge tslearn
 pip install tqdm
 pip install pyts
-
-###
-# Install sktime
-# https://www.sktime.net/en/stable/installation.html
 # conda install -c conda-forge sktime  
 # conda install -c conda-forge aeon
 ```
-- xxx.yml is the project environment setting.
+
 # Project Structure
 - Slides
 
 # Corresponding Paper
 
 # Figures in the Paper
-- Figures ... can be found in xxx.ipynb.
+- Figures 1, 3, 4, 5, 6 can be found in `../main.ipynb`.
+- Figures 8 can be found in `../data-exploration.ipynb`.
