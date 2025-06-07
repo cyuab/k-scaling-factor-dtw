@@ -225,7 +225,7 @@ def ps_distance_p(Q, C, l, r, L, P, distance_method='ed', lower_bound_method=lb_
 
     # total_iters = P * m * n
     # progress = tqdm(total=total_iters, desc="DP Progress") # For progress tracking
-    start_time = time.time() # Timing
+    # start_time = time.time() # Timing
 
     for p in range(1, P+1):
         for i in range(1, m+1):
@@ -286,9 +286,9 @@ def ps_distance_p(Q, C, l, r, L, P, distance_method='ed', lower_bound_method=lb_
                         # D[i][j][p] = min(D[i][j][p], D[qi_st][cj_st][p-1]+cost)
     
     # progress.close()
-    elapsed = time.time() - start_time
-    print(f"Total iterations: {no_of_iteration}")
-    print(f"\nTotal time: {elapsed:.2f} seconds")
+    # elapsed = time.time() - start_time
+    # print(f"Total iterations: {no_of_iteration}")
+    # print(f"\nTotal time: {elapsed:.2f} seconds")
     # Backtracking to recover the cutting points
     cuts = []
     i, j, p = m, n, P
@@ -376,7 +376,7 @@ def ps_distance_p_without_prune(Q, C, l, r, L, P, distance_method='ed', lower_bo
 
     # total_iters = P * m * n
     # progress = tqdm(total=total_iters, desc="DP Progress") # For progress tracking
-    start_time = time.time() # Timing
+    # start_time = time.time() # Timing
 
     for p in range(1, P+1):
         for i in range(1, m+1):
@@ -437,9 +437,9 @@ def ps_distance_p_without_prune(Q, C, l, r, L, P, distance_method='ed', lower_bo
                         # D[i][j][p] = min(D[i][j][p], D[qi_st][cj_st][p-1]+cost)
     
     # progress.close()
-    elapsed = time.time() - start_time
-    print(f"Total iterations: {no_of_iteration}")
-    print(f"\nTotal time: {elapsed:.2f} seconds")
+    # elapsed = time.time() - start_time
+    # print(f"Total iterations: {no_of_iteration}")
+    # print(f"\nTotal time: {elapsed:.2f} seconds")
     # Backtracking to recover the cutting points
     cuts = []
     i, j, p = m, n, P
