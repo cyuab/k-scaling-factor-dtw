@@ -1,8 +1,5 @@
-<object data="figures/psdtw-intuition.pptx.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="figures/psdtw-intuition.pptx.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
+
+![Figure 1](figures/psdtw-intuition.pptx.svg)
 
 # Updates
 - 2025=06-06 Submitted to ICDM 2025
