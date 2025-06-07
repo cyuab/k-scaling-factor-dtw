@@ -1,5 +1,5 @@
 .DS_Store
-data/
+# data/
 # figures/
 
 # Byte-compiled / optimized / DLL files
