@@ -26,7 +26,7 @@ pip install pandas
 conda install -c conda-forge tslearn
 pip install tqdm
 pip install pyts
-# Others common time series libraries that are not used in the project.
+# Other common time series libraries that are not used in the project but are useful for exploring time series data.
 conda install -c conda-forge sktime  
 conda install -c conda-forge aeon
 ```
