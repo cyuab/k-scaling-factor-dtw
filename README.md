@@ -15,7 +15,7 @@
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
 - 2025-06-07 Slides will be uploaded here later.
-- 2025-06-06 Submitted to [ICDM 2025](https://www3.cs.stonybrook.edu/~icdm2025/index.html)
+- 2025-06-06 Submitted to [ICDM 2025](https://www3.cs.stonybrook.edu/~icdm2025/index.html).
 
 # Install
 ```
