@@ -6,6 +6,9 @@
 ![PSDTW example](figures/psdtw-ex.png)
 - The red time series is the original time series. We introduce piecewise scaling to it and derive the blue time series.
   - So, they share the same set of segments, each with a different scaling factor.
+  - Our algorithm (in `../code/main.ipynb`) can discover the cutting points of segments.
+    - `[((0, 21), (0, 22)), ((21, 33), (22, 29)), ((33, 50), (29, 50))]`
+    -  E.g., `((0, 21), (0, 22))` indicates that the first segment in the red time series starts at 0 (inclusive) and ends at 21 (exclusive), while the first segment in the blue one starts at 0 (inclusive) and ends at 22 (exclusive). 
 
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
