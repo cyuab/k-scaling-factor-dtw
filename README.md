@@ -27,7 +27,7 @@ conda install -c conda-forge aeon
 ```bash
 ├── code
 │   ├── data-exploration.ipynb # Explore GunPoint dataset 
-│   ├── ksfdtw.py
+│   ├── ksfdtw.py # Custom libraries
 │   ├── main.ipynb # Explore manipulation of time series in Python
 │   ├── querying.ipynb # Experiment
 │   └── testing # The scripts under this folder is for development purpose and only for book-keeping purpose.
