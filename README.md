@@ -1,7 +1,9 @@
 # Scaling with Multiple Scaling Factors and Dynamic Time Warping in Time Series Searching
 <!-- https://stackoverflow.com/questions/39777166/display-pdf-image-in-markdown -->
 <!-- for d in *.pdf ; do inkscape --without-gui --file=$d --export-plain-svg=${d%.*}.svg ; done -->
-![Figure 1](figures/psdtw-intuition.pptx.svg)
+![PSDTW intution](figures/psdtw-intuition.pptx.svg)
+This figure shows the necessity of our novel distance measure PSDTW.
+![PSDTW example](figures/psdtw-ex.png)
 
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
