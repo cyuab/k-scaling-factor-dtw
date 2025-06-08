@@ -2,7 +2,7 @@
 <!-- https://stackoverflow.com/questions/39777166/display-pdf-image-in-markdown -->
 <!-- for d in *.pdf ; do inkscape --without-gui --file=$d --export-plain-svg=${d%.*}.svg ; done -->
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)
-This figure shows the necessity of our novel distance measure PSDTW.
+- This figure shows the necessity of our novel distance measure PSDTW.
 ![PSDTW example](figures/psdtw-ex.png)
 
 # Notifications
