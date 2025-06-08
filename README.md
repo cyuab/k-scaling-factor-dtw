@@ -8,7 +8,9 @@
   - So, they share the same set of segments, each with a different scaling factor.
   - Our algorithm (in `../code/main.ipynb`) can discover the cutting points of segments.
     - `[((0, 21), (0, 22)), ((21, 33), (22, 29)), ((33, 50), (29, 50))]`
-    -  E.g., `((0, 21), (0, 22))` indicates that the first segment in the red time series starts at 0 (inclusive) and ends at 21 (exclusive), while the first segment in the blue one starts at 0 (inclusive) and ends at 22 (exclusive). 
+      -  E.g., `((0, 21), (0, 22))` indicates that the first segment in the red time series starts at 0 (inclusive) and ends at 21 (exclusive), while the first segment in the blue one starts at 0 (inclusive) and ends at 22 (exclusive).
+      -  The scaling factor can be calculated by the lengths of the segment in the same aligned pair.
+        - E.g., the scaling factor of the last aligned pair is $(50-33)/(50-20) \approx 0.56$. The last segment of the red has been compressed to that of the blue.     
 
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
