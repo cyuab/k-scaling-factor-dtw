@@ -2,7 +2,7 @@
 <!-- https://stackoverflow.com/questions/39777166/display-pdf-image-in-markdown -->
 <!-- for d in *.pdf ; do inkscape --without-gui --file=$d --export-plain-svg=${d%.*}.svg ; done -->
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)
-- This figure shows the necessity of our novel distance measure PSDTW.
+- This figure shows intuition of the necessity of our novel distance measure PSDTW.
 ![PSDTW example](figures/psdtw-ex.png)
 - The red time series is the original time series. We introduce piecewise scaling to it and derive the blue time series.
   - So, they share the same set of segments, each with a different scaling factor.
@@ -29,11 +29,16 @@ pip install pyts
 # Other common time series libraries that are not used in the project but are useful for exploring time series data.
 conda install -c conda-forge sktime  
 conda install -c conda-forge aeon
+
+# Or readers can make new environment from our environment. 
+# But different platforms may have their own platform-specific packages that may cause error if importing `environments.yml` directly.
+conda env create --name envname --file=environments.yml
 ```
 
 # Project Structure
 <!-- https://stackoverflow.com/questions/23989232/is-there-a-way-to-represent-a-directory-tree-in-a-github-readme-md -->
-- Important folders and files in this repository are listed as belows: 
+- Important folders and files in this repository are listed as belows:
+- Readers should visit the files in this order: `main.ipynb` -> `data-exploration.ipynb` -> `querying.ipynb`.
 ```bash
 ├── code
 │   ├── data-exploration.ipynb # Explore GunPoint dataset 
@@ -43,6 +48,8 @@ conda install -c conda-forge aeon
 │   └── testing # The scripts under this folder is for development purpose and only for book-keeping purpose.
 ├── data # Processed dataset after processing in "data-exploration.ipynb "
 │   └── gunpoint_preprocessed.npz
+├── environment.yaml # Store the python environment
+├── figures # Figures for the paper and this `README.md`.
 ├── README.md # Here
 └── results # Results generated from "querying.ipynb"
 ```
@@ -52,4 +59,7 @@ conda install -c conda-forge aeon
 
 # Figures in the Paper
 - Figures 1, 3, 4, 5, 6 can be found in `../main.ipynb`.
-- Figures 7 (raw figures), 8 can be found in `../data-exploration.ipynb`.
+- Figures 7 (its raw figures), 8 can be found in `../data-exploration.ipynb`.
+
+# Contacts
+- It will be updated after paper acceptance.
