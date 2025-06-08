@@ -4,6 +4,8 @@
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)
 - This figure shows the necessity of our novel distance measure PSDTW.
 ![PSDTW example](figures/psdtw-ex.png)
+- The red time series is the original time series. We introduce piecewise scaling to it and derive the blue time series.
+  - So, they share the same set of segments, each with a different scaling factor.
 
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
