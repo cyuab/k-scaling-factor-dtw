@@ -1,8 +1,7 @@
 # Scaling with Multiple Scaling Factors and Dynamic Time Warping in Time Series Searching
-<!-- https://stackoverflow.com/questions/39777166/display-pdf-image-in-markdown -->
-<!-- for d in *.pdf ; do inkscape --without-gui --file=$d --export-plain-svg=${d%.*}.svg ; done -->
+
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)
-- This figure shows intuition of the necessity of our novel distance measure PSDTW.
+- The above figure shows the intuition of the necessity of our novel distance measure PSDTW.
 ![PSDTW example](figures/psdtw-ex.png)
 - The red time series is the original time series. We introduce piecewise scaling to it and derive the blue time series.
   - So, they share the same set of segments, each with a different scaling factor.
@@ -14,8 +13,12 @@
 
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
-- 2025-06-07 Slides will be uploaded here later.
-- 2025-06-06 Submitted to [ICDM 2025](https://www3.cs.stonybrook.edu/~icdm2025/index.html).
+- 2025-08-29: Submitted to [IEEE BigData 2025](https://conferences.cis.um.edu.mo/ieeebigdata2025/).
+
+## Pending Tasks
+- [] 2025-08-29: Make video presentation.
+- [] 2025-08-29: Make slides.
+
 
 # Install
 ```
@@ -24,42 +27,80 @@ conda activate ksfdtw
 conda install -c conda-forge dtaidistance
 pip install pandas
 conda install -c conda-forge tslearn
-pip install tqdm
+pip install tqdm # For progress bar
 pip install pyts
-# Other common time series libraries that are not used in the project but are useful for exploring time series data.
 conda install -c conda-forge sktime  
 conda install -c conda-forge aeon
+conda install h5py
+# Export your active environment to a new file:
+conda env export > environment.yml
+# Deactivate the environment
+conda deactivate
+# Delete the environment if needed.
+conda env remove -n ksfdtw
 
-# Or readers can make new environment from our environment. 
+# Or readers can make a new environment from our environment. 
 # But different platforms may have their own platform-specific packages that may cause error if importing `environments.yml` directly.
 conda env create --name envname --file=environments.yml
 ```
 
+
 # Project Structure
-<!-- https://stackoverflow.com/questions/23989232/is-there-a-way-to-represent-a-directory-tree-in-a-github-readme-md -->
+- Data Visualization: class_representative.ipynb
+- Data Processing: data_processing.ipynb
 - Important folders and files in this repository are listed as belows:
-- Readers should visit the files in this order: `main.ipynb` -> `data-exploration.ipynb` -> `querying.ipynb`.
-```bash
-├── code
-│   ├── data-exploration.ipynb # Explore GunPoint dataset 
-│   ├── ksfdtw.py # Custom libraries
-│   ├── main.ipynb # Explore manipulation of time series in Python
-│   ├── querying.ipynb # Experiment
-│   └── testing # The scripts under this folder is for development purpose and only for book-keeping purpose.
-├── data # Processed dataset after processing in "data-exploration.ipynb "
-│   └── gunpoint_preprocessed.npz
-├── environment.yaml # Store the python environment
-├── figures # Figures for the paper and this `README.md`.
-├── README.md # Here
-└── results # Results generated from "querying.ipynb"
-```
+  ```bash
+  ├── code
+  │   ├── data-exploration.ipynb # Explore GunPoint dataset 
+  │   ├── ksfdtw.py # Custom libraries
+  │   ├── main.ipynb # Explore manipulation of time series in Python
+  │   ├── querying.ipynb # Experiment
+  │   └── testing # The scripts under this folder is for development purpose and only for book-keeping purpose.
+  ├── data # Processed dataset after processing in "data-exploration.ipynb "
+  │   └── gunpoint_preprocessed.npz
+  ├── environment.yaml # Store the python environment
+  ├── figures # Figures for the paper and this `README.md`.
+  ├── README.md # Here
+  └── results # Results generated from "querying.ipynb"
+  ```
 
 # Corresponding Paper
-- Information of the relevant paper will be uploaded here after paper acceptance.
+-It will be updated after paper acceptance.
 
-# Figures in the Paper
+## Figures/Tables in the Paper
 - Figures 1, 3, 4, 5, 6 can be found in `../main.ipynb`.
 - Figures 7 (its raw figures), 8 can be found in `../data-exploration.ipynb`.
 
+# Resources
+1. [aeon](https://www.aeon-toolkit.org/en/stable/index.html)
+    - [Distances - aeon 1.2.0 documentation](https://www.aeon-toolkit.org/en/stable/api_reference/distances.html)
+    - [dtw_distance - aeon 1.2.0 documentation](https://www.aeon-toolkit.org/en/stable/api_reference/auto_generated/aeon.distances.dtw_distance.html)
+1. [DTAIDistance](https://dtaidistance.readthedocs.io/en/latest/index.html)
+    - [Dynamic Time Warping (DTW) — DTAIDistance 2.3.9 documentation](https://dtaidistance.readthedocs.io/en/latest/usage/dtw.html)
+1. [tslearn](https://tslearn.readthedocs.io/en/stable/index.html)
+    - [tslearn.metrics — tslearn 0.6.4 documentation](https://tslearn.readthedocs.io/en/stable/gen_modules/tslearn.metrics.html#module-tslearn.metrics)
+    - [Dynamic Time Warping — tslearn 0.6.4 documentation](https://tslearn.readthedocs.io/en/stable/user_guide/dtw.html)
+1. [pyts](https://pyts.readthedocs.io/en/stable/index.html)
+    - [pyts.metrics.dtw — pyts 0.13.0 documentation](https://pyts.readthedocs.io/en/stable/generated/pyts.metrics.dtw.html)
+1. [sktime](https://www.sktime.net/en/stable/)
+    - [dtw_distance — sktime documentation](https://www.sktime.net/en/stable/api_reference/auto_generated/sktime.distances.dtw_distance.html)
+1. FastDTW
+    - [Original Java implementation](https://github.com/rmaestre/FastDTW)
+    - [Python implementation](https://github.com/slaypni/fastdtw)
+1. [dtw-python · PyPI](https://pypi.org/project/dtw-python/)
+1. [dtw · PyPI](https://pypi.org/project/dtw/)
+    
 # Contacts
 - It will be updated after paper acceptance.
+
+---
+---
+---
+
+
+
+
+
+
+
+
