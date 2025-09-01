@@ -33,6 +33,12 @@ def dtw(Q, C, r):
     return D[m, n]
 
 
+# https://stackoverflow.com/questions/66934748/how-to-stretch-an-array-to-a-new-length-while-keeping-same-value-distribution
+def linear_interpolation(array: np.ndarray, new_len: int) -> np.ndarray:
+    la = len(array)
+    return np.interp(np.linspace(0, la - 1, num=new_len), np.arange(la), array)
+
+
 @njit
 def nearest_neighbor_interpolation(T, new_len):
     k = len(T)
@@ -41,6 +47,30 @@ def nearest_neighbor_interpolation(T, new_len):
     for i in range(new_len):
         out[i] = T[indices[i]]
     return out
+
+
+def nearest_neighbor_interpolation_legacy_2(ts, new_len):
+    ts = np.asarray(ts)
+    k = len(ts)
+    # Compute indices symmetrically
+    indices = [int(round(j * (k - 1) / (new_len - 1))) for j in range(new_len)]
+    return ts[indices]
+
+
+def nearest_neighbor_interpolation_legacy_3(ts, new_len):
+    ts = np.asarray(ts)
+    k = len(ts)
+    indices = np.rint(np.linspace(0, k - 1, new_len)).astype(int)
+    return ts[indices]
+
+
+def nearest_neighbor_interpolation_legacy_4(ts, new_len):
+    ts = np.asarray(ts)
+    k = len(ts)
+    indices = [
+        int(np.ceil(j * k / new_len)) - 1 for j in range(1, new_len + 1)
+    ]  # Why -1? 1-based (in the paper) to 0-based (default in Python)
+    return ts[indices]
 
 
 @njit
@@ -53,6 +83,20 @@ def usdtw_prime(Q, C, L, r, dist_method=0):
         return aeon_dtw_distance(Q_scaled, C_scaled, window=r)
     else:
         raise ValueError("Invalid distance method!")
+
+
+@njit
+def usdtw(Q, C, l, L, r, dist_method=0):
+    m, n = len(Q), len(C)
+    best_so_far = np.inf
+    best_k = -1
+    for k in range(math.ceil(m / l), min(math.floor(l * m), n) + 1):
+        C_prefix = C[:k]
+        dist = usdtw_prime(Q, C_prefix, L, r, dist_method)
+        if dist < best_so_far:
+            best_so_far = dist
+            best_k = k
+    return best_so_far, best_k
 
 
 @njit
@@ -110,15 +154,3 @@ def psdtw_prime(Q, C, l, P, r, dist_method=0):
 ###
 ###
 ###
-
-# def usdtw(Q, C, l, L, r, distance_method="dtw"):
-#     m = len(Q)
-#     n = len(C)
-#     best_so_far = np.inf
-#     for k in range(math.ceil(m / l), min(math.ceil(l * m), n) + 1):
-#         C_prefix = C[:k]
-#         dist = usdtw__prime(Q, C_prefix, L, r, distance_method)
-#         if dist < best_so_far:
-#             best_so_far = dist
-#             best_k = k
-#     return best_so_far, best_k
