@@ -3,6 +3,7 @@
 # figures/
 testing/
 test*
+pending/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

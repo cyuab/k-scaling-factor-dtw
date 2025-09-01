@@ -1,57 +1,169 @@
 import numpy as np
-from numba import njit
 import math
+from numba import njit
 
 from aeon.distances import (
     euclidean_distance as aeon_euclidean_distance,
     dtw_distance as aeon_dtw_distance,
 )
 
-from ksfdtw.utils import nearest_neighbor_interpolation
 
-
-def hello_world():
-    print("Hello, world!")
+@njit
+def ed(Q, C):
+    if len(Q) != len(C):
+        raise ValueError("Not equal length!")
+    dist = 0.0
+    for i in range(len(Q)):
+        diff = Q[i] - C[i]
+        dist += diff * diff
+    return dist
 
 
 @njit
-def ed(a, b):
-    assert len(a) == len(
-        b
-    ), "Euclidean distance (ED) requires time series of equal length!"
-
-    dist = 0.0
-    for i in range(len(a)):
-        diff = a[i] - b[i]
-        dist += diff * diff
-    return dist
-    # return math.sqrt(dist)
-
-
-# Compute Euclidean distances to all training samples
-def ed_legacy(a, b):
-    return np.sqrt(np.sum((a - b) ** 2))
+def dtw(Q, C, r):
+    m, n = len(Q), len(C)
+    if abs(n - m) > r:
+        raise ValueError("abs(n-m) > r!")
+    D = np.full((n + 1, m + 1), np.inf)
+    D[0, 0] = 0.0
+    for i in range(1, m + 1):
+        for j in range(max(1, i - r), min(n, i + r) + 1):
+            cost = (Q[i - 1] - C[j - 1]) ** 2
+            D[i, j] = cost + min(D[i - 1, j], D[i, j - 1], D[i - 1, j - 1])
+    return D[m, n]
 
 
-def usdtw__prime(Q, C, L, r, distance_method="dtw"):
-    C_scaled = nearest_neighbor_interpolation(C, L)
+@njit
+def nearest_neighbor_interpolation(T, new_len):
+    k = len(T)
+    indices = np.rint(np.linspace(0, k - 1, new_len)).astype(np.int64)
+    out = np.empty(new_len, dtype=T.dtype)
+    for i in range(new_len):
+        out[i] = T[indices[i]]
+    return out
+
+
+@njit
+def usdtw_prime(Q, C, L, r, dist_method=0):
     Q_scaled = nearest_neighbor_interpolation(Q, L)
-    if distance_method == "ed":
+    C_scaled = nearest_neighbor_interpolation(C, L)
+    if dist_method == 0:
         return aeon_euclidean_distance(Q_scaled, C_scaled)
-    elif distance_method == "dtw":
+    elif dist_method == 1:
         return aeon_dtw_distance(Q_scaled, C_scaled, window=r)
     else:
-        raise ValueError("Unknown distance method: {}".format(distance_method))
+        raise ValueError("Invalid distance method!")
 
 
-def usdtw(Q, C, l, L, r, distance_method="dtw"):
-    m = len(Q)
-    n = len(C)
-    best_so_far = np.inf
-    for k in range(math.ceil(m / l), min(math.ceil(l * m), n) + 1):
-        C_prefix = C[:k]
-        dist = usdtw__prime(Q, C_prefix, L, r, distance_method)
-        if dist < best_so_far:
-            best_so_far = dist
-            best_k = k
-    return best_so_far, best_k
+@njit
+def psdtw_prime(Q, C, l, P, r, dist_method=0):
+    m, n = len(Q), len(C)
+    l_sqrt = math.sqrt(l)
+    L_Q_avg = m / P
+    L_Q_gmin = int(math.floor(L_Q_avg / l_sqrt))
+    L_Q_gmax = int(math.ceil(L_Q_avg * l_sqrt))
+    L_C_avg = n / P
+    L_C_gmin = int(math.floor(L_C_avg / l_sqrt))
+    L_C_gmax = int(math.ceil(L_C_avg * l_sqrt))
+
+    # Minimum cost to align the **first i** elements of Q and the **first j** elements of C using **P** exactly segments
+    D = np.full((m + 1, n + 1, P + 1), np.inf)
+    D[0, 0, 0] = 0.0
+    for p in range(1, P + 1):
+        L_Q_prevs_min = (
+            p - 1
+        ) * L_Q_gmin  # (p-1) segments take at least "(p - 1) * L_Q_gmin" points
+        L_Q_prevs_w_cur_min = (
+            L_Q_prevs_min + L_Q_gmin
+        )  # p segments take at least "L_Q_gmin" more points
+        L_Q_prevs_max = (p - 1) * L_Q_gmax
+        L_Q_prevs_w_cur_max = L_Q_prevs_max + L_Q_gmax
+
+        for i in range(L_Q_prevs_w_cur_min, min(L_Q_prevs_w_cur_max, m) + 1):
+            for L_Q in range(L_Q_gmin, L_Q_gmax + 1):
+                if i - (L_Q + L_Q_prevs_min) < 0:
+                    continue
+                i_prime = i - L_Q
+                L_C_min = int(math.floor(L_Q / l))
+                L_C_max = int(math.ceil(L_Q * l))
+                L_C_prevs_min = (p - 1) * L_C_gmin
+                L_C_prevs_w_cur_min = L_C_prevs_min + L_C_gmin
+                L_C_prevs_max = (p - 1) * L_C_gmax
+                L_C_prevs_w_cur_max = L_C_prevs_max + L_C_gmax
+                for j in range(L_C_prevs_w_cur_min, min(L_C_prevs_w_cur_max, n) + 1):
+                    for L_C in range(L_C_min, L_C_max + 1):
+                        if j - (L_C + L_C_prevs_min) < 0:
+                            continue
+                        j_prime = j - L_C
+                        D_cost = D[i_prime, j_prime, p - 1]
+                        dist_cost = usdtw_prime(
+                            Q[i_prime:i],
+                            C[j_prime:j],
+                            L=max(L_Q_gmax, L_C_gmax),
+                            r=r,
+                            dist_method=dist_method,
+                        )
+                        D[i, j, p] = min(D[i, j, p], D_cost + dist_cost)
+    return D[m, n, P]
+
+
+###
+###
+###
+
+# import numpy as np
+# import math
+
+# from aeon.distances import (
+#     euclidean_distance as aeon_euclidean_distance,
+#     dtw_distance as aeon_dtw_distance,
+# )
+
+# from ksfdtw.utils import nearest_neighbor_interpolation
+
+
+# def hello_world():
+#     print("Hello, world!")
+
+
+# @njit
+# def ed(a, b):
+#     assert len(a) == len(
+#         b
+#     ), "Euclidean distance (ED) requires time series of equal length!"
+
+#     dist = 0.0
+#     for i in range(len(a)):
+#         diff = a[i] - b[i]
+#         dist += diff * diff
+#     return dist
+#     # return math.sqrt(dist)
+
+
+# # Compute Euclidean distances to all training samples
+# def ed_legacy(a, b):
+#     return np.sqrt(np.sum((a - b) ** 2))
+
+
+# def usdtw__prime(Q, C, L, r, distance_method="dtw"):
+#     C_scaled = nearest_neighbor_interpolation(C, L)
+#     Q_scaled = nearest_neighbor_interpolation(Q, L)
+#     if distance_method == "ed":
+#         return aeon_euclidean_distance(Q_scaled, C_scaled)
+#     elif distance_method == "dtw":
+#         return aeon_dtw_distance(Q_scaled, C_scaled, window=r)
+#     else:
+#         raise ValueError("Unknown distance method: {}".format(distance_method))
+
+
+# def usdtw(Q, C, l, L, r, distance_method="dtw"):
+#     m = len(Q)
+#     n = len(C)
+#     best_so_far = np.inf
+#     for k in range(math.ceil(m / l), min(math.ceil(l * m), n) + 1):
+#         C_prefix = C[:k]
+#         dist = usdtw__prime(Q, C_prefix, L, r, distance_method)
+#         if dist < best_so_far:
+#             best_so_far = dist
+#             best_k = k
+#     return best_so_far, best_k
