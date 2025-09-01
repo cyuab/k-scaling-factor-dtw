@@ -125,10 +125,6 @@ def us_usdtw(Q, C, l, r, L, distance_method="ed"):
 import numpy as np
 
 
-def hello_world():
-    print("Hello, world! 2")
-
-
 def nearest_neighbor_interpolation(ts, new_len):
     ts = np.asarray(ts)
     k = len(ts)
