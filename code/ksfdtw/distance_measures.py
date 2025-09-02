@@ -49,7 +49,7 @@ def nearest_neighbor_interpolation(T, new_len):
     return out
 
 
-def nearest_neighbor_interpolation_legacy_2(ts, new_len):
+def nearest_neighbor_interpolation_2d(ts, new_len):
     ts = np.asarray(ts)
     k = len(ts)
     # Compute indices symmetrically
