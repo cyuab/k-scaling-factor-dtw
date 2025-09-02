@@ -1,11 +1,59 @@
-###
-###
-###
 import numpy as np
+from numba import njit
 
 
-def lb_keogh(ts_query, ts_candidate, radius):
-    lower, upper = lb_keogh_envelope(ts_query, radius)
+@njit
+def lb_dummy(Q, C):
+    return 0.0
+
+
+@njit
+def lb_kim(Q, C):
+    return max(
+        (Q[0] - C[0]) ** 2,
+        (Q[-1] - C[-1]) ** 2,
+        (np.max(Q) - np.max(C)) ** 2,
+        (np.min(Q) - np.min(C)) ** 2,
+    )
+
+
+@njit
+def lb_kim_first_last(Q, C):
+    return (Q[0] - C[0]) ** 2 + (Q[-1] - C[-1]) ** 2
+
+
+@njit
+def lb_keogh(Q, C, r):
+    n = len(Q)
+    lb_sum = 0.0
+    for i in range(len(C)):
+        # compute envelope on-the-fly
+        start = 0 if i - r < 0 else i - r  # start = max(0, i - radius)
+        end = n if i + r + 1 > n else i + r + 1  # end = min(n, i + radius + 1)
+
+        lower_entry = Q[start]
+        upper_entry = Q[start]
+        for k in range(start + 1, end):
+            val = Q[k]
+            if val < lower_entry:
+                lower_entry = val
+            elif val > upper_entry:
+                upper_entry = val
+
+        # accumulate deviation
+        cur_val = C[i]
+        if cur_val > upper_entry:
+            diff = cur_val - upper_entry
+            lb_sum += diff * diff
+        elif cur_val < lower_entry:
+            diff = cur_val - lower_entry
+            lb_sum += diff * diff
+
+    return lb_sum
+
+
+def lb_keogh_legacy(ts_query, ts_candidate, radius):
+    lower, upper = lb_keogh_envelope_legacy(ts_query, radius)
     lb_sum = 0
     for i in range(len(ts_candidate)):
         if ts_candidate[i] > upper[i]:
@@ -15,7 +63,28 @@ def lb_keogh(ts_query, ts_candidate, radius):
     return np.sqrt(lb_sum)
 
 
-def lb_keogh_envelope(ts, radius):
+@njit
+def lb_keogh_envelope(T, r):
+    n = len(T)
+    upper = np.empty(n, dtype=np.float64)
+    lower = np.empty(n, dtype=np.float64)
+    for i in range(n):
+        start = 0 if i - r < 0 else i - r  # start = max(0, i - radius)
+        end = n if i + r + 1 > n else i + r + 1  # end = min(n, i + radius + 1)
+        lower_entry = T[start]
+        upper_entry = T[start]
+        for k in range(start + 1, end):
+            val = T[k]
+            if val < lower_entry:
+                lower_entry = val
+            elif val > upper_entry:
+                upper_entry = val
+        lower[i] = lower_entry
+        upper[i] = upper_entry
+    return lower, upper
+
+
+def lb_keogh_envelope_legacy(ts, radius):
     n = len(ts)
     upper = np.zeros(n)
     lower = np.zeros(n)
@@ -27,39 +96,60 @@ def lb_keogh_envelope(ts, radius):
     return lower, upper
 
 
-def ensure_non_zero_len(a):
-    if len(a) == 0:
-        raise ValueError("Error: Zero length time series.")
+@njit
+def lb_shen(q, c, l=1.0, r=0.1):
+    # convert float radius to int
+    r = int(min(len(q), len(c)) * r) if r < 1 else int(r)
+    m = len(q)
+    n = len(c)
+
+    dist_total = (q[0] - c[0]) ** 2
+
+    max_j = min(int(np.ceil(l * m)), n - 1)
+    for j in range(1, max_j):
+        start = int(max(0, np.ceil(j / l) - r))
+        end = int(min(np.ceil(j * l) + r, m - 1))
+
+        min_dist = (c[j] - q[start]) ** 2
+        for k in range(start + 1, end + 1):
+            d = (c[j] - q[k]) ** 2
+            if d < min_dist:
+                min_dist = d
+        dist_total += min_dist
+
+    dist_total += (q[-1] - c[-1]) ** 2
+    return dist_total
 
 
-def lb_dummy(q, c, l=1, r=0.1):
-    ensure_non_zero_len(q)
-    ensure_non_zero_len(c)
-    return 0
+@njit
+def lb_shen_without_last(q, c, l=1.0, r=0.1):
+    r = int(min(len(q), len(c)) * r) if r < 1 else int(r)
+    m = len(q)
+    n = len(c)
+
+    dist_total = (q[0] - c[0]) ** 2
+
+    max_j = min(int(np.ceil(l * m)), n - 2)
+    for j in range(1, max_j):
+        start = int(max(0, np.ceil(j / l) - r))
+        end = int(min(np.ceil(j * l) + r, m - 1))
+
+        min_dist = (c[j] - q[start]) ** 2
+        for k in range(start + 1, end + 1):
+            d = (c[j] - q[k]) ** 2
+            if d < min_dist:
+                min_dist = d
+        dist_total += min_dist
+
+    return dist_total
 
 
-def lb_kim(q, c, l=1, r=0.1):
-    ensure_non_zero_len(q)
-    ensure_non_zero_len(c)
-    return np.sqrt(
-        max(
-            (q[0] - c[0]) ** 2,
-            (q[-1] - c[-1]) ** 2,
-            (max(q) - max(c)) ** 2,
-            (min(q) - min(c)) ** 2,
-        )
-    )
+###
+###
+###
 
 
-def lb_kim_fl(q, c, l=1, r=0.1):
-    ensure_non_zero_len(q)
-    ensure_non_zero_len(c)
-    return np.sqrt((q[0] - c[0]) ** 2 + (q[-1] - c[-1]) ** 2)
-
-
-def lb_shen(q, c, l=1, r=0.1):
-    ensure_non_zero_len(q)
-    ensure_non_zero_len(c)
+def lb_shen_legacy(q, c, l=1, r=0.1):
     if isinstance(r, float):
         # print("r is a float.")
         minlen = min(len(q), len(c))
@@ -98,9 +188,7 @@ def lb_shen(q, c, l=1, r=0.1):
     return np.sqrt(dist_total)
 
 
-def lb_shen_without_last(q, c, l=1, r=0.1):
-    ensure_non_zero_len(q)
-    ensure_non_zero_len(c)
+def lb_shen_without_last_legacy(q, c, l=1, r=0.1):
     if isinstance(r, float):
         # print("r is a float.")
         minlen = min(len(q), len(c))
