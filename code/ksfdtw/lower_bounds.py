@@ -3,7 +3,7 @@ from numba import njit
 
 
 @njit
-def lb_dummy(Q, C):
+def lb_dummy(Q, C, l, r):
     return 0.0
 
 
