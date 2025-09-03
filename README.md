@@ -15,8 +15,6 @@ Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
 ## Pending Tasks
 - [] 2025-08-29: Make video presentation.
 - [] 2025-08-29: Make slides.
-- [x] test.
-
 
 # Install
 ```
@@ -75,7 +73,8 @@ conda env create --name envname --file=environments.yml
 -It will be updated after paper acceptance.
 
 ## Figures/Tables in the Paper
-- Figures 1, 4: [main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
+- Figures 1, 4: 
+[main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
 - Figure 3: [dtw_bands_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/dtw_bands_fig.ipynb)
 - Figure 5: [lb_keogh_vs_lb_shen_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/lb_keogh_vs_lb_shen_fig.ipynb)
 - Figure 6: [class_representative_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/class_representative_fig.ipynb)
