@@ -2,15 +2,12 @@
 
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)
 - The above figure shows the intuition of the necessity of our novel distance measure PSDTW.
-![PSDTW example](figures/psdtw-ex.png)
-- The red time series is the original time series. We introduce piecewise scaling to it and derive the blue time series.
-  - So, they share the same set of segments, each with a different scaling factor.
-  - Our algorithm (in `../code/main.ipynb`) can discover the cutting points of segments.
-    - `[((0, 21), (0, 22)), ((21, 33), (22, 29)), ((33, 50), (29, 50))]`
-      -  E.g., `((0, 21), (0, 22))` indicates that the first segment in the red time series starts at 0 (inclusive) and ends at 21 (exclusive), while the first segment in the blue one starts at 0 (inclusive) and ends at 22 (exclusive).
-      -  The scaling factor can be calculated by the lengths of the segment in the same aligned pair.
-        - E.g., the scaling factor of the last aligned pair is $(50-33)/(50-20) \approx 0.56$. The last segment of the red has been compressed to that of the blue.     
 
+![PSDTW example](figures/psdtw-ex.png)
+- The red time series is the original time series. We introduce piecewise scaling (ps) to it and derive the blue time series.
+  - Since PSDTW tries to divide two time series into continuous pairs of segments, we can know the cut points and the corresponding scaling factor.
+    -  The scaling factor can be calculated by the lengths of the segment in the same aligned pair.
+      
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
 - 2025-08-29: Submitted to [IEEE BigData 2025](https://conferences.cis.um.edu.mo/ieeebigdata2025/).
@@ -46,30 +43,43 @@ conda env create --name envname --file=environments.yml
 
 
 # Project Structure
+- Explore our PSDTW: main.ipynb
 - Data Visualization: class_representative.ipynb
 - Data Processing: data_processing.ipynb
+- Query Experiment: querying.ipynb (P.S., A simple query code can be in querying_ex.ipynb)
 - Important folders and files in this repository are listed as belows:
   ```bash
+  .
   ├── code
-  │   ├── data-exploration.ipynb # Explore GunPoint dataset 
-  │   ├── ksfdtw.py # Custom libraries
-  │   ├── main.ipynb # Explore manipulation of time series in Python
-  │   ├── querying.ipynb # Experiment
-  │   └── testing # The scripts under this folder is for development purpose and only for book-keeping purpose.
-  ├── data # Processed dataset after processing in "data-exploration.ipynb "
-  │   └── gunpoint_preprocessed.npz
-  ├── environment.yaml # Store the python environment
-  ├── figures # Figures for the paper and this `README.md`.
-  ├── README.md # Here
-  └── results # Results generated from "querying.ipynb"
+  │   ├── class_representative_fig.ipynb
+  │   ├── data_processing.ipynb
+  │   ├── dtw_bands_fig.ipynb
+  │   ├── ksfdtw
+  │   │   ├── distance_measures.py
+  │   │   ├── lower_bounds.py
+  │   │   └── utils.py
+  │   ├── lb_keogh_vs_lb_shen_fig.ipynb
+  │   ├── main.ipynb
+  │   ├── querying_ex.ipynb
+  │   ├── querying.ipynb
+  ├── data
+  ├── data_intermediate
+  ├── environment.yaml
+  ├── figures
+  ├── README.md
+  └── results
   ```
 
 # Corresponding Paper
 -It will be updated after paper acceptance.
 
 ## Figures/Tables in the Paper
-- Figures 1, 3, 4, 5, 6 can be found in `../main.ipynb`.
-- Figures 7 (its raw figures), 8 can be found in `../data-exploration.ipynb`.
+- Figures 1, 4: `main.ipynb`
+- Figure 3: `dtw_bands_fig.ipynb`
+- Figure 5: `lb_keogh_vs_lb_shen_fig.ipynb`
+- Figure 6: `class_representative_fig.ipynb`
+- Figure 7: `data_processing.ipynb`
+
 
 # Resources
 1. [aeon](https://www.aeon-toolkit.org/en/stable/index.html)
@@ -92,10 +102,6 @@ conda env create --name envname --file=environments.yml
     
 # Contacts
 - It will be updated after paper acceptance.
-
----
----
----
 
 
 
