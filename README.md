@@ -42,10 +42,10 @@ conda env create --name envname --file=environments.yml
 
 
 # Project Structure
-- Explore our PSDTW: main.ipynb
-- Data Visualization: class_representative.ipynb
-- Data Processing: data_processing.ipynb
-- Query Experiment: querying.ipynb (P.S., A simple query code can be in querying_ex.ipynb)
+- Explore our PSDTW: [main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
+- Data Visualization: [class_representative.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/class_representative_fig.ipynb)
+- Data Processing: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/data_processing.ipynb)
+- Query Experiment: [querying.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/querying.ipynb) (P.S., A simple query code can be in [querying_ex.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/querying_ex.ipynb))
 - Important folders and files in this repository are listed as belows:
   ```bash
   .
@@ -73,8 +73,7 @@ conda env create --name envname --file=environments.yml
 -It will be updated after paper acceptance.
 
 ## Figures/Tables in the Paper
-- Figures 1, 4: 
-[main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
+- Figures 1, 4: [main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
 - Figure 3: [dtw_bands_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/dtw_bands_fig.ipynb)
 - Figure 5: [lb_keogh_vs_lb_shen_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/lb_keogh_vs_lb_shen_fig.ipynb)
 - Figure 6: [class_representative_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/class_representative_fig.ipynb)
