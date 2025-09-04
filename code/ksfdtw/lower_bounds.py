@@ -97,7 +97,7 @@ def lb_keogh_envelope_legacy(ts, radius):
 
 
 @njit
-def lb_shen(q, c, l=1.0, r=0.1):
+def lb_shen(q, c, l=2.0, r=0.1):
     # convert float radius to int
     r = int(min(len(q), len(c)) * r) if r < 1 else int(r)
     m = len(q)
@@ -122,7 +122,7 @@ def lb_shen(q, c, l=1.0, r=0.1):
 
 
 @njit
-def lb_shen_without_last(q, c, l=1.0, r=0.1):
+def lb_shen_without_last(q, c, l=2.0, r=0.1):
     r = int(min(len(q), len(c)) * r) if r < 1 else int(r)
     m = len(q)
     n = len(c)
