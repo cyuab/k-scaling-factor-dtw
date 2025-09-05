@@ -4,6 +4,7 @@
 testing/
 test*
 pending/
+temp*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
