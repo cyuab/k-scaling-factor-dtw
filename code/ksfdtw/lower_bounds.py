@@ -185,7 +185,7 @@ def lb_shen_legacy(q, c, l=1, r=0.1):
         dist_total += min_dist
     # print(dist(q[-1], c[-1]))
     dist_total += dist(q[-1], c[-1])
-    return np.sqrt(dist_total)
+    return dist_total
 
 
 def lb_shen_without_last_legacy(q, c, l=1, r=0.1):
