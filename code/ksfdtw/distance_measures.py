@@ -164,7 +164,7 @@ def psdtw_prime(Q, C, l, P, r, dist_method=0):
 
 @njit
 def psdtw_prime_test(Q, C, l, P, r, dist_method=0):
-    print("Using psdtw_prime_test")
+    # print("Using psdtw_prime_test")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -179,10 +179,6 @@ def psdtw_prime_test(Q, C, l, P, r, dist_method=0):
     # Each segment satisfies the length constraint
     D = np.full((m + 1, n + 1, P + 1), np.inf)
     D[0, 0, 0] = 0.0
-    # D_cut = [
-    #     [[(None, None) for _ in range(P + 1)] for _ in range(n + 1)]
-    #     for _ in range(m + 1)
-    # ]  # backtracking
     D_cut = np.full((m + 1, n + 1, P + 1, 2), -1, dtype=np.int64)
 
     for p in range(1, P + 1):
@@ -225,15 +221,6 @@ def psdtw_prime_test(Q, C, l, P, r, dist_method=0):
                             D[i, j, p] = cur_cost
                             D_cut[i, j, p, 0] = i_prime
                             D_cut[i, j, p, 1] = j_prime
-                            # D_cut[i][j][p] = (i_prime, j_prime)
-    # cuts = []
-    # i, j, p = m, n, P
-    # while p > 0:
-    #     i_prime, j_prime = D_cut[i][j][p]
-    #     cuts.append(((i_prime, i), (j_prime, j)))  # Q segment, C segment
-    #     i, j, p = i_prime, j_prime, p - 1
-    # cuts.reverse()
-    # Backtracking into an array of shape (P, 4)
     cuts = np.zeros((P, 4), dtype=np.int64)
     i, j, p = m, n, P
     while p > 0:
@@ -245,6 +232,27 @@ def psdtw_prime_test(Q, C, l, P, r, dist_method=0):
         cuts[p - 1, 3] = j
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
+
+
+@njit
+def psedd_prime_test(Q, C, l, P, r):
+    _, _, cuts = psdtw_prime_test(Q, C, l, P, r, dist_method=0)
+    m = len(Q)
+    l_sqrt = math.sqrt(l)
+    L_avg = m / P
+    L_max = min(int(math.floor(L_avg * l_sqrt)), m)
+    dist = 0.0
+    for cut in cuts:
+        # print(cut[0], cut[1], cut[2], cut[3])
+        dist_cost = usdtw_prime(
+            Q[cut[0] : cut[1]],
+            C[cut[2] : cut[3]],
+            L=L_max,
+            r=r,
+            dist_method=1,
+        )
+        dist += dist_cost
+    return dist
 
 
 @njit
