@@ -80,8 +80,10 @@ def usdtw_prime(Q, C, L, r, dist_method=0):
     Q_scaled = nearest_neighbor_interpolation(Q, L)
     C_scaled = nearest_neighbor_interpolation(C, L)
     if dist_method == 0:
-        return aeon_euclidean_distance(Q_scaled, C_scaled)
+        # return ed(Q_scaled, C_scaled)
+        return aeon_euclidean_distance(Q_scaled, C_scaled) ** 2
     elif dist_method == 1:
+        # return dtw(Q_scaled, C_scaled, r)
         return aeon_dtw_distance(Q_scaled, C_scaled, window=r)
     else:
         raise ValueError("Invalid distance method!")
@@ -158,6 +160,91 @@ def psdtw_prime(Q, C, l, P, r, dist_method=0):
                         if new_cost < D[i, j, p]:
                             D[i, j, p] = new_cost
     return D[m, n, P], count_dist_calls
+
+
+@njit
+def psdtw_prime_test(Q, C, l, P, r, dist_method=0):
+    print("Using psdtw_prime_test")
+    count_dist_calls = 0
+    m = len(Q)
+    n = len(C)
+    assert m == n, "m should be equal to n"
+    l_sqrt = math.sqrt(l)
+    L_avg = m / P
+    L_min = int(math.ceil(L_avg / l_sqrt))
+    L_max = min(int(math.floor(L_avg * l_sqrt)), m)
+    # print(L_max, L_min)
+
+    # Minimum cost to align the **first i** elements of Q (i.e., Q[:i]) and the **first j** elements of C (i.e., C[:j]) using **P** exactly segments
+    # Each segment satisfies the length constraint
+    D = np.full((m + 1, n + 1, P + 1), np.inf)
+    D[0, 0, 0] = 0.0
+    # D_cut = [
+    #     [[(None, None) for _ in range(P + 1)] for _ in range(n + 1)]
+    #     for _ in range(m + 1)
+    # ]  # backtracking
+    D_cut = np.full((m + 1, n + 1, P + 1, 2), -1, dtype=np.int64)
+
+    for p in range(1, P + 1):
+        L_acc_min = L_min * p  # p segments take at least "L_min" points
+        L_acc_max = L_max * p
+
+        for i in range(L_acc_min, min(L_acc_max, m) + 1):
+            for L_Q in range(L_min, L_max + 1):
+                i_prime = i - L_Q
+                L_C_min = max(L_min, int(math.ceil(L_Q / l)))
+                L_C_max = min(int(math.floor(L_Q * l)), L_max)
+
+                for j in range(L_acc_min, min(L_acc_max, n) + 1):
+                    for L_C in range(L_C_min, L_C_max + 1):
+                        j_prime = j - L_C
+                        D_cost = D[i_prime, j_prime, p - 1]
+                        # Lower bounds
+                        if np.isinf(D_cost):
+                            # print("Skipping due to D_cost = inf!")
+                            continue
+                        if D_cost > D[i][j][p]:  # best_so_far
+                            # print("Skipping due to D_cost > best_so_far!")
+                            continue
+                        # print(
+                        #     f"Computing usdtw_prime for Q[{i_prime}:{i}] and C[{j_prime}:{j}]"
+                        # )
+                        # print(f"L_Q = {L_Q}, L_C = {L_C}")
+                        # print(f"L_C_min = {L_C_min}, L_C_max = {L_C_max}")
+                        dist_cost = usdtw_prime(
+                            Q[i_prime:i],
+                            C[j_prime:j],
+                            L=L_max,
+                            r=r,
+                            dist_method=dist_method,
+                        )
+                        count_dist_calls += 1
+                        # D[i, j, p] = min(D[i, j, p], D_cost + dist_cost)
+                        cur_cost = D_cost + dist_cost
+                        if cur_cost < D[i, j, p]:
+                            D[i, j, p] = cur_cost
+                            D_cut[i, j, p, 0] = i_prime
+                            D_cut[i, j, p, 1] = j_prime
+                            # D_cut[i][j][p] = (i_prime, j_prime)
+    # cuts = []
+    # i, j, p = m, n, P
+    # while p > 0:
+    #     i_prime, j_prime = D_cut[i][j][p]
+    #     cuts.append(((i_prime, i), (j_prime, j)))  # Q segment, C segment
+    #     i, j, p = i_prime, j_prime, p - 1
+    # cuts.reverse()
+    # Backtracking into an array of shape (P, 4)
+    cuts = np.zeros((P, 4), dtype=np.int64)
+    i, j, p = m, n, P
+    while p > 0:
+        i_prime = D_cut[i, j, p, 0]
+        j_prime = D_cut[i, j, p, 1]
+        cuts[p - 1, 0] = i_prime
+        cuts[p - 1, 1] = i
+        cuts[p - 1, 2] = j_prime
+        cuts[p - 1, 3] = j
+        i, j, p = i_prime, j_prime, p - 1
+    return D[m, n, P], count_dist_calls, cuts
 
 
 @njit
