@@ -1,0 +1,22 @@
+method, precision_at_1, precision_at_3, precision_at_5, precision_at_7, time_in_seconds (No. of dist calls)
+dtw, 0.32, 0.44, 0.60, 0.74, 84 ms
+shape_dtw, 0.38, 0.48, 0.58, 0.74, 221 ms
+ddtw, 0.38, 0.62, 0.68, 0.78, 80.3 ms
+wdtw, 0.30, 0.42, 0.60, 0.74, 86.8 ms
+wddtw, 0.40, 0.60, 0.66, 0.72, 84.4 ms
+adtw, 0.20, 0.34, 0.52, 0.68, 167 ms
+erp, 0.24, 0.40, 0.54, 0.70, 161 ms
+edr, 0.22, 0.42, 0.62, 0.76, 98.2 ms
+msm, 0.22, 0.40, 0.56, 0.70, 148 ms
+twe, 0.24, 0.42, 0.58, 0.72, 182 ms
+lcss, 0.20, 0.36, 0.42, 0.52 76.3 ms
+euclidean, 0.18, 0.36, 0.52, 0.60, 5.17 ms
+manhattan, 0.20, 0.38, 0.50, 0.64, 5.48 ms
+minkowski, 0.18, 0.36, 0.52, 0.60, 11 ms
+sbd, 0.22, 0.32, 0.42, 0.60, 125 ms
+psed, 0.48, 0.62, 0.70, 0.80, 30min 53s
+psed_lb_shen,
+psedd, 0.40, 0.50, 0.64, 0.80, 30min 37s
+psedd_lb_shen,
+psdtw, 
+psdtw_lb_shen,
