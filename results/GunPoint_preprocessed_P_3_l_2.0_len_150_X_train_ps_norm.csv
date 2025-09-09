@@ -14,9 +14,9 @@ euclidean, 0.18, 0.36, 0.52, 0.60, 5.17 ms
 manhattan, 0.20, 0.38, 0.50, 0.64, 5.48 ms
 minkowski, 0.18, 0.36, 0.52, 0.60, 11 ms
 sbd, 0.22, 0.32, 0.42, 0.60, 125 ms
-psed, 0.48, 0.62, 0.70, 0.80, 30min 53s
+psed, 0.48, 0.62, 0.70, 0.80, 30min 53s (Remote Server)
 psed_lb_shen,
-psedd, 0.40, 0.50, 0.64, 0.80, 30min 37s
+psedd, 0.40, 0.50, 0.64, 0.80, 30min 37s (Remote Server)
 psedd_lb_shen,
 psdtw, 
 psdtw_lb_shen,
