@@ -3,6 +3,7 @@ import math
 from numba import njit
 
 from aeon.distances import (
+    euclidean_distance as aeon_euclidean_distance,
     dtw_distance as aeon_dtw_distance,
     shape_dtw_distance as aeon_shape_dtw_distance,
     ddtw_distance as aeon_ddtw_distance,
@@ -14,7 +15,6 @@ from aeon.distances import (
     msm_distance as aeon_msm_distance,
     twe_distance as aeon_twe_distance,
     lcss_distance as aeon_lcss_distance,
-    euclidean_distance as aeon_euclidean_distance,
     manhattan_distance as aeon_manhattan_distance,
     minkowski_distance as aeon_minkowski_distance,
     sbd_distance as aeon_sbd_distance,
@@ -101,26 +101,28 @@ def usdtw_prime(Q, C, L, r, dist_method):
     elif dist_method == 2:
         return aeon_shape_dtw_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 3:
-        return aeon_wdtw_distance(Q_scaled, C_scaled, window=r)
+        return aeon_ddtw_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 4:
-        return aeon_wddtw_distance(Q_scaled, C_scaled, window=r)
+        return aeon_wdtw_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 5:
-        return aeon_adtw_distance(Q_scaled, C_scaled, window=r)
+        return aeon_wddtw_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 6:
-        return aeon_erp_distance(Q_scaled, C_scaled, window=r)
+        return aeon_adtw_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 7:
-        return aeon_edr_distance(Q_scaled, C_scaled, window=r)
+        return aeon_erp_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 8:
-        return aeon_msm_distance(Q_scaled, C_scaled, window=r)
+        return aeon_edr_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 9:
-        return aeon_twe_distance(Q_scaled, C_scaled, window=r)
+        return aeon_msm_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 10:
-        return aeon_lcss_distance(Q_scaled, C_scaled, window=r)
+        return aeon_twe_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 11:
-        return aeon_manhattan_distance(Q_scaled, C_scaled)
+        return aeon_lcss_distance(Q_scaled, C_scaled, window=r)
     elif dist_method == 12:
-        return aeon_minkowski_distance(Q_scaled, C_scaled)
+        return aeon_manhattan_distance(Q_scaled, C_scaled)
     elif dist_method == 13:
+        return aeon_minkowski_distance(Q_scaled, C_scaled)
+    elif dist_method == 14:
         return aeon_sbd_distance(Q_scaled, C_scaled)
     else:
         raise ValueError("Invalid distance method!")

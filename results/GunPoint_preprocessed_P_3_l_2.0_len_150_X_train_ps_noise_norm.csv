@@ -1,4 +1,5 @@
 method, precision_at_1, precision_at_3, precision_at_5, precision_at_7, time (No. of dist calls) (Server)
+euclidean, 0.18, 0.36, 0.52, 0.62, 5.9 ms
 dtw, 0.34, 0.46, 0.56, 0.72, 83.7 ms
 shape_dtw, 0.30, 0.44, 0.58, 0.72, 221 ms
 ddtw, 0.20, 0.36, 0.46, 0.64, 82.2 ms
@@ -10,12 +11,11 @@ edr, 0.28, 0.38, 0.56, 0.68, 96.3 ms
 msm, 0.22, 0.36, 0.54, 0.70, 155 ms
 twe, 0.24, 0.36, 0.58, 0.72, 176 ms
 lcss, 0.18, 0.32, 0.44, 0.54, 69.4 ms
-euclidean, 0.18, 0.36, 0.52, 0.62, 5.9 ms
 manhattan, 0.22, 0.38, 0.56, 0.64, 5.34 ms
 minkowski, 0.18, 0.36, 0.52, 0.62, 9.72 ms
 sbd, 0.22, 0.32, 0.42, 0.62, 132 ms
-psed, 0.42, 0.60, 0.70, 0.82, 31min 15s (94526106) (lgpu2-cssystem-hkust)
+psed, 0.42, 0.60, 0.70, 0.82, 31min 15s (94526106) (lgpu2)
 psed_lb_shen, 
-psed-dtw, 0.40, 0.48, 0.64, 0.74, 31min 9s (lgpu2-cssystem-hkust)
-psdtw, 0.34, 0.54, 0.62, 0.76, 11h 54s (100584398) (lgpu2-cssystem-hkust) 
+psed-dtw, 0.40, 0.48, 0.64, 0.74, 31min 9s (lgpu2)
+psdtw, 0.34, 0.54, 0.62, 0.76, 11h 54s (100584398) (lgpu2) 
 psdtw_lb_shen,
