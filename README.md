@@ -105,7 +105,19 @@ conda env create --name envname --file=environments.yml
 test
 
 
+# tmux
+```
+# https://www.ruanyifeng.com/blog/2019/10/tmux.html
+# https://superuser.com/questions/249659/how-to-detach-a-tmux-session-that-itself-already-in-a-tmux
+# https://www.redhat.com/en/blog/introduction-tmux-linux
 
+$ tmux ls
+$ tmux new -s <session-name>
+# Detach
+Ctrl+B then D
+$ tmux attach -t <session-name>
+$ tmux kill-session -t <session-name>
 
+```
 
 
