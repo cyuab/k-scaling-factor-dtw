@@ -1,41 +1,40 @@
 method, precision_at_1, precision_at_3, precision_at_5, precision_at_7, time (Server) (No. of dist calls) 
-ADTW, 0.20, 0.34, 0.52, 0.68, 95.3 ms
-DDTW, 0.38, 0.62, 0.68, 0.78, 80.8 ms
-DTW, 0.32, 0.44, 0.60, 0.74, 84.7 ms
-ERP, 0.24, 0.40, 0.54, 0.70, 90.3 ms
-EDR, 0.22, 0.42, 0.62, 0.76, 86.2 ms
-Euclidean, 0.18, 0.36, 0.52, 0.60, 5.04 ms
-LCSS, 0.20, 0.36, 0.42, 0.52, 71 ms
-Manhattan, 0.20, 0.38, 0.50, 0.64, 5.28 ms
-Minkowski, 0.18, 0.36, 0.52, 0.60, 10.8 ms
-MSM, 0.22, 0.40, 0.56, 0.70, 156 ms
-SBD, 0.22, 0.32, 0.42, 0.60, 125 ms
-Shape DTW, 0.38, 0.48, 0.58, 0.74, 225 ms
-Squared, 0.18, 0.36, 0.52, 0.60, 5.06 ms
-TWE, 0.24, 0.42, 0.58, 0.72, 177 ms
-WDDTW, 0.40, 0.60, 0.66, 0.72, 85.9 ms
-WDTW, 0.30, 0.42, 0.60, 0.74, 89.1 ms
-PSED
-PSDTW
+ADTW (2), 0.20, 0.34, 0.52, 0.68, 95.3 ms
+DDTW (3), 0.38, 0.62, 0.68, 0.78, 80.8 ms
+DTW (1), 0.32, 0.44, 0.60, 0.74, 84.7 ms
+ERP (4), 0.24, 0.40, 0.54, 0.70, 90.3 ms
+EDR (5), 0.22, 0.42, 0.62, 0.76, 86.2 ms
+Euclidean (0), 0.18, 0.36, 0.52, 0.60, 5.04 ms
+LCSS (6), 0.20, 0.36, 0.42, 0.52, 71 ms
+Manhattan (7), 0.20, 0.38, 0.50, 0.64, 5.28 ms
+Minkowski (8), 0.18, 0.36, 0.52, 0.60, 10.8 ms
+MSM (9), 0.22, 0.40, 0.56, 0.70, 156 ms
+SBD (10), 0.22, 0.32, 0.42, 0.60, 125 ms
+Shape DTW (11), 0.38, 0.48, 0.58, 0.74, 225 ms
+Squared (12), 0.18, 0.36, 0.52, 0.60, 5.06 ms
+TWE (13), 0.24, 0.42, 0.58, 0.72, 177 ms
+WDDTW (14), 0.40, 0.60, 0.66, 0.72, 85.9 ms
+WDTW (15), 0.30, 0.42, 0.60, 0.74, 89.1 ms
+PSED, 0.48, 0.62, 0.70, 0.80, 30min 33s (lgpu2) (4129543095.0)
 PSED (LB_Shen)
 PSDTW (LB_Shen)
 *, 0, 0, 0, 0, 0
-PSED-ADTW, 
-PSED-DDTW, 
-PSED-DTW, 
-PSED-ERP, 
-PSED-EDR, 
-PSED-Euclidean,
-PSED-LCSS,
-PSED-Manhattan,
-PSED-Minkowski,
-PSED-MSM,
-PSED-SBD,
-PSED-Shape DTW,
-PSED-Squared,
-PSED-TWE,
-PSED-WDDTW,
-PSED-WDTW,
+PSED-ADTW, 0.48, 0.62, 0.70, 0.80, 0
+PSED-DDTW, 0.50, 0.70, 0.82, 0.86, 0
+PSED-DTW, 0.40, 0.50, 0.64, 0.80, 0
+PSED-ERP, 0.36, 0.50, 0.66, 0.78, 0
+PSED-EDR, 0.26, 0.40, 0.52, 0.58, 0
+PSED-Euclidean, 0.48, 0.62, 0.70, 0.80, 0
+PSED-LCSS, 0.06, 0.12, 0.16, 0.26, 0
+PSED-Manhattan, 0.36, 0.48, 0.62, 0.78, 0
+PSED-Minkowski, 0.44, 0.58, 0.70, 0.78, 0
+PSED-MSM, 0.36, 0.48, 0.62, 0.78, 0
+PSED-SBD, 0.78, 0.96, 1.00, 1.00, 0
+PSED-Shape DTW, 0.46, 0.58, 0.68, 0.80, 0
+PSED-Squared, 0.48, 0.62, 0.70, 0.80, 0
+PSED-TWE, 0.36, 0.48, 0.60, 0.78, 0
+PSED-WDDTW, 0.50, 0.70, 0.82, 0.86, 0
+PSED-WDTW, 0.40, 0.50, 0.64, 0.78, 0
 *, 0, 0, 0, 0, 0
 PSDTW-ADTW, 
 PSDTW-DDTW, 
@@ -54,17 +53,5 @@ PSDTW-TWE,
 PSDTW-WDDTW,
 PSDTW-WDTW,
 
-
-
-
-
-
-
-
-
-
-psed, 0.48, 0.62, 0.70, 0.80, 30min 53s (*) (lgpu2)
-psed_lb_shen,
-psed-dtw, 0.40, 0.50, 0.64, 0.80, 30min 37s (lgpu2)
 psdtw, 0.36, 0.50, 0.60, 0.76, 10h 55min 54s (*) (lgpu2)
-psdtw_lb_shen,
+
