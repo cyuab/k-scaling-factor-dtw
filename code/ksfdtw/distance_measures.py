@@ -226,9 +226,25 @@ def psdtw_prime_vanilla(Q, C, l, P, r, dist_method):
     return D[m, n, P], count_dist_calls, cuts
 
 
+@njit(inline="always")
+def lb_shen_prefix(Q, C, l, r):
+    m = len(Q)
+    dist_total = (Q[0] - C[0]) ** 2
+    for j in range(1, m):
+        start = int(max(0, np.ceil(j / l) - r))
+        end = int(min(np.ceil(j * l) + r, m - 1))
+        min_dist = (C[j] - Q[start]) ** 2
+        for k in range(start + 1, end + 1):
+            d = (C[j] - Q[k]) ** 2
+            if d < min_dist:
+                min_dist = d
+        dist_total += min_dist
+    return dist_total
+
+
 @njit
 def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
-    print("psdtw_prime_vanilla_test 5")
+    print("psdtw_prime_vanilla_test 2")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -245,6 +261,8 @@ def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
     D[0, 0, 0] = 0.0
     D_cut = np.full((m + 1, n + 1, P + 1, 2), -1, dtype=np.int64)
 
+    lb = 0
+
     for p in range(1, P + 1):
         L_acc_min = L_min * p  # p segments take at least "L_min" points
         L_acc_max = L_max * p
@@ -254,8 +272,10 @@ def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
                 i_prime = i - L_Q
                 L_C_min = max(L_min, int(math.ceil(L_Q / l)))
                 L_C_max = min(int(math.floor(L_Q * l)), L_max)
-
                 for j in range(L_acc_min, min(L_acc_max, n) + 1):
+                    lb = lb_shen_prefix(
+                        Q[i_prime:i][::-1], C[j - L_C_min : j][::-1], l=l, r=r
+                    )
                     for L_C in range(L_C_min, L_C_max + 1):
                         j_prime = j - L_C
                         D_cost = D[i_prime, j_prime, p - 1]
@@ -266,9 +286,9 @@ def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
                         if D_cost > D[i][j][p]:  # best_so_far
                             # print("Skipping due to D_cost > best_so_far!")
                             continue
-                        lb = lb_shen_without_last(
-                            Q[i_prime:i][::-1], C[j_prime:j][::-1], l=l, r=r
-                        )
+                        # lb = lb_shen_without_last(
+                        #     Q[i_prime:i][::-1], C[j_prime:j][::-1], l=l, r=r
+                        # )
                         if D_cost + lb > D[i][j][p]:
                             continue
 
