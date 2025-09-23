@@ -21,7 +21,7 @@ from aeon.distances import (
     wdtw_distance as aeon_wdtw_distance,
 )
 
-from .lower_bounds import lb_shen
+from .lower_bounds import lb_shen, lb_shen_without_last
 
 
 @njit
@@ -228,7 +228,7 @@ def psdtw_prime_vanilla(Q, C, l, P, r, dist_method):
 
 @njit
 def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
-    # print("Using psdtw_prime_test")
+    print("psdtw_prime_vanilla_test 5")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -266,6 +266,12 @@ def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
                         if D_cost > D[i][j][p]:  # best_so_far
                             # print("Skipping due to D_cost > best_so_far!")
                             continue
+                        lb = lb_shen_without_last(
+                            Q[i_prime:i][::-1], C[j_prime:j][::-1], l=l, r=r
+                        )
+                        if D_cost + lb > D[i][j][p]:
+                            continue
+
                         # print(
                         #     f"Computing usdtw_prime for Q[{i_prime}:{i}] and C[{j_prime}:{j}]"
                         # )
