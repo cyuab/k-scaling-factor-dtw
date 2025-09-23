@@ -242,9 +242,23 @@ def lb_shen_prefix(Q, C, l, r):
     return dist_total
 
 
+@njit(inline="always")
+def lb_shen_incremental(Q, C, l, r):
+    m = len(Q)
+    j_last = len(C) - 1
+    start = int(max(0, np.ceil(j_last / l) - r))
+    end = int(min(np.ceil(j_last * l) + r, m - 1))
+    min_dist = (C[j_last] - Q[start]) ** 2
+    for k in range(start + 1, end + 1):
+        d = (C[j_last] - Q[k]) ** 2
+        if d < min_dist:
+            min_dist = d
+    return min_dist
+
+
 @njit
 def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
-    print("psdtw_prime_vanilla_test 2")
+    print("psdtw_prime_vanilla_test")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -280,18 +294,19 @@ def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
                         j_prime = j - L_C
                         D_cost = D[i_prime, j_prime, p - 1]
                         # Lower bounds
+                        if L_C > L_C_min:
+                            lb += lb_shen_incremental(
+                                Q[i_prime:i][::-1], C[j_prime:j], l, r
+                            )
+
                         if np.isinf(D_cost):
                             # print("Skipping due to D_cost = inf!")
                             continue
-                        if D_cost > D[i][j][p]:  # best_so_far
+                        elif D_cost > D[i][j][p]:  # best_so_far
                             # print("Skipping due to D_cost > best_so_far!")
                             continue
-                        # lb = lb_shen_without_last(
-                        #     Q[i_prime:i][::-1], C[j_prime:j][::-1], l=l, r=r
-                        # )
-                        if D_cost + lb > D[i][j][p]:
+                        elif D_cost + lb > D[i][j][p]:
                             continue
-
                         # print(
                         #     f"Computing usdtw_prime for Q[{i_prime}:{i}] and C[{j_prime}:{j}]"
                         # )

@@ -166,8 +166,8 @@ def lb_shen_slow(Q, C, l, r, use_last=True):
         start = int(max(0, np.ceil(j / l) - r))
         end = int(min(np.floor(j * l) + r, m - 1))
 
-        q_window = q[start : end + 1]
-        min_dist = np.min([dist(c[j], q_k) for q_k in q_window])
+        q_window = Q[start : end + 1]
+        min_dist = np.min([dist(C[j], q_k) for q_k in q_window])
         lb_sum += min_dist
     lb_sum += dist(Q[-1], C[-1])
     return lb_sum
