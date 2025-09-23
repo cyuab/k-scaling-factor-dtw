@@ -117,7 +117,8 @@ $ tmux new -s <session-name>
 Ctrl+B then D
 $ tmux attach -t <session-name>
 $ tmux kill-session -t <session-name>
-
+# https://askubuntu.com/questions/868186/how-to-kill-all-tmux-sessions-or-at-least-multiple-sessions-from-the-cli
+$ tmux kill-server
 ```
 
 

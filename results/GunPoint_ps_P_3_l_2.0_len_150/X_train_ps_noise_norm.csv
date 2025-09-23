@@ -1,4 +1,4 @@
-method, precision_at_1, precision_at_3, precision_at_5, precision_at_7, time (Server) (No. of dist calls) 
+method, precision_at_1, precision_at_3, precision_at_5, precision_at_7, time in second (Server) (No. of dist calls) 
 ADTW (2), 0.20, 0.34, 0.52, 0.72, 96.2 ms
 DDTW (3), 0.18, 0.44, 0.52, 0.64, 81.4 ms
 DTW (1), 0.36, 0.48, 0.56, 0.74, 90 ms
@@ -15,11 +15,9 @@ Squared (12), 0.18, 0.34, 0.52, 0.60, 5.1 ms
 TWE (13), 0.24, 0.40, 0.58, 0.74, 178 ms
 WDDTW (14), 0.24, 0.46, 0.58, 0.62, 83.3 ms
 WDTW (15), 0.30, 0.44, 0.60, 0.74, 87.4 ms
-PSED, 0.48, 0.60, 0.70, 0.84, 31min 35s (lgpu2) (4181670351.0)
-PSED (LB_Shen)
-PSDTW
-PSDTW (LB_Shen)
 *, 0, 0, 0, 0, 0
+PSED, 0.48, 0.60, 0.70, 0.84, 1876.2171049118042 (4181670351.0)
+PSED (LB_Shen)
 PSED-ADTW, 0.48, 0.60, 0.70, 0.84, 0
 PSED-DDTW, 0.20, 0.48, 0.58, 0.64, 0
 PSED-DTW, 0.42, 0.50, 0.64, 0.74, 0
@@ -37,21 +35,21 @@ PSED-TWE, 0.44, 0.58, 0.70, 0.82, 0
 PSED-WDDTW, 0.24, 0.50, 0.60, 0.64, 0
 PSED-WDTW, 0.40, 0.50, 0.64, 0.74, 0
 *, 0, 0, 0, 0, 0
-PSDTW-ADTW, 
-PSDTW-DDTW, 
-PSDTW-DTW, 
-PSDTW-ERP, 
-PSDTW-EDR, 
-PSDTW-Euclidean,
-PSDTW-LCSS,
-PSDTW-Manhattan,
-PSDTW-Minkowski,
-PSDTW-MSM,
-PSDTW-SBD,
-PSDTW-Shape DTW,
-PSDTW-Squared,
-PSDTW-TWE,
-PSDTW-WDDTW,
-PSDTW-WDTW,
-
-psdtw, 0.34, 0.54, 0.62, 0.76, 11h 54s (*) (lgpu2) 
+PSDTW, 0.42, 0.48, 0.64, 0.72, 39486.585753917694 (4141475524.0)
+PSDTW (LB_Shen)
+PSDTW-ADTW, 0.18, 0.40, 0.56, 0.64, 0
+PSDTW-DDTW, 0.26, 0.40, 0.48, 0.54, 0
+PSDTW-DTW, 0.42, 0.48, 0.64, 0.72, 0
+PSDTW-ERP, 0.26, 0.50, 0.60, 0.72, 0
+PSDTW-EDR, 0.30, 0.38, 0.50, 0.54, 0
+PSDTW-Euclidean, 0.18, 0.40, 0.54, 0.64, 0
+PSDTW-LCSS, 0.06, 0.24, 0.36, 0.44, 0
+PSDTW-Manhattan, 0.22, 0.50, 0.60, 0.70, 0
+PSDTW-Minkowski, 0.20, 0.46, 0.62, 0.68, 0
+PSDTW-MSM, 0.22, 0.48, 0.62, 0.70, 0
+PSDTW-SBD, 0.24, 0.44, 0.46, 0.58, 0
+PSDTW-Shape DTW, 0.40, 0.56, 0.68, 0.78, 0
+PSDTW-Squared, 0.18, 0.40, 0.54, 0.64, 0
+PSDTW-TWE, 0.40, 0.52, 0.60, 0.78, 0
+PSDTW-WDDTW, 0.34, 0.40, 0.48, 0.64, 0
+PSDTW-WDTW, 0.40, 0.50, 0.64, 0.74, 0
