@@ -290,23 +290,24 @@ def psdtw_prime_vanilla_test(Q, C, l, P, r, dist_method):
                     lb = lb_shen_prefix(
                         Q[i_prime:i][::-1], C[j - L_C_min : j][::-1], l=l, r=r
                     )
+                    if lb > D[i][j][p]:  # best_so_far
+                        continue
                     for L_C in range(L_C_min, L_C_max + 1):
                         j_prime = j - L_C
                         D_cost = D[i_prime, j_prime, p - 1]
                         # Lower bounds
+                        if np.isinf(D_cost):
+                            # print("Skipping due to D_cost = inf!")
+                            continue
+                        elif D_cost + lb > D[i][j][p]:  # best_so_far
+                            # print("Skipping due to D_cost > best_so_far!")
+                            continue
                         if L_C > L_C_min:
                             lb += lb_shen_incremental(
                                 Q[i_prime:i][::-1], C[j_prime:j], l, r
                             )
-
-                        if np.isinf(D_cost):
-                            # print("Skipping due to D_cost = inf!")
-                            continue
-                        elif D_cost > D[i][j][p]:  # best_so_far
-                            # print("Skipping due to D_cost > best_so_far!")
-                            continue
-                        elif D_cost + lb > D[i][j][p]:
-                            continue
+                            if D_cost + lb > D[i][j][p]:
+                                continue
                         # print(
                         #     f"Computing usdtw_prime for Q[{i_prime}:{i}] and C[{j_prime}:{j}]"
                         # )
@@ -360,47 +361,47 @@ def cut_based_distance(Q, C, l, P, r, dist_method, cuts):
     return dist
 
 
-@njit
-def psedd_prime(Q, C, l, P, r):
-    _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
-    m = len(Q)
-    l_root = math.sqrt(l)
-    L_avg = m / P
-    L_max = min(int(math.floor(L_avg * l_root)), m)
-    dist = 0.0
-    for cut in cuts:
-        # print(cut[0], cut[1], cut[2], cut[3])
-        dist_cost = usdtw_prime(
-            Q[cut[0] : cut[1]],
-            C[cut[2] : cut[3]],
-            L=L_max,
-            r=r,
-            dist_method=1,
-        )
-        dist += dist_cost
-    return dist
+# @njit
+# def psedd_prime(Q, C, l, P, r):
+#     _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
+#     m = len(Q)
+#     l_root = math.sqrt(l)
+#     L_avg = m / P
+#     L_max = min(int(math.floor(L_avg * l_root)), m)
+#     dist = 0.0
+#     for cut in cuts:
+#         # print(cut[0], cut[1], cut[2], cut[3])
+#         dist_cost = usdtw_prime(
+#             Q[cut[0] : cut[1]],
+#             C[cut[2] : cut[3]],
+#             L=L_max,
+#             r=r,
+#             dist_method=1,
+#         )
+#         dist += dist_cost
+#     return dist
 
 
-@njit
-def psedd_prime_test(Q, C, l, P, r):
-    _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
-    print(cuts)
-    m = len(Q)
-    l_root = math.sqrt(l)
-    L_avg = m / P
-    L_max = min(int(math.floor(L_avg * l_root)), m)
-    dist = 0.0
-    for cut in cuts:
-        # print(cut[0], cut[1], cut[2], cut[3])
-        dist_cost = usdtw_prime(
-            Q[cut[0] : cut[1]],
-            C[cut[2] : cut[3]],
-            L=L_max,
-            r=r,
-            dist_method=1,
-        )
-        dist += dist_cost
-    return dist
+# @njit
+# def psedd_prime_test(Q, C, l, P, r):
+#     _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
+#     print(cuts)
+#     m = len(Q)
+#     l_root = math.sqrt(l)
+#     L_avg = m / P
+#     L_max = min(int(math.floor(L_avg * l_root)), m)
+#     dist = 0.0
+#     for cut in cuts:
+#         # print(cut[0], cut[1], cut[2], cut[3])
+#         dist_cost = usdtw_prime(
+#             Q[cut[0] : cut[1]],
+#             C[cut[2] : cut[3]],
+#             L=L_max,
+#             r=r,
+#             dist_method=1,
+#         )
+#         dist += dist_cost
+#     return dist
 
 
 ###
@@ -478,15 +479,15 @@ def psdtw_prime_cache_flattened_array(Q, C, l, P, r, dist_method=0):
     return D[m, n, P]
 
 
-@njit
-def row_min(D, qi_st, p):
-    n = D.shape[1]  # length along j
-    min_val = np.inf
-    for j in range(n):
-        val = D[qi_st, j, p - 1]
-        if val < min_val:
-            min_val = val
-    return min_val
+# @njit
+# def row_min(D, qi_st, p):
+#     n = D.shape[1]  # length along j
+#     min_val = np.inf
+#     for j in range(n):
+#         val = D[qi_st, j, p - 1]
+#         if val < min_val:
+#             min_val = val
+#     return min_val
 
 
 @njit
