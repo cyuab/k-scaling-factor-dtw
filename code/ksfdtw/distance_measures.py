@@ -460,47 +460,47 @@ def cut_based_distance(Q, C, l, P, r, dist_method, cuts):
     return dist
 
 
-# @njit
-# def psedd_prime(Q, C, l, P, r):
-#     _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
-#     m = len(Q)
-#     l_root = math.sqrt(l)
-#     L_avg = m / P
-#     L_max = min(int(math.floor(L_avg * l_root)), m)
-#     dist = 0.0
-#     for cut in cuts:
-#         # print(cut[0], cut[1], cut[2], cut[3])
-#         dist_cost = usdtw_prime(
-#             Q[cut[0] : cut[1]],
-#             C[cut[2] : cut[3]],
-#             L=L_max,
-#             r=r,
-#             dist_method=1,
-#         )
-#         dist += dist_cost
-#     return dist
+@njit
+def psedd_prime(Q, C, l, P, r):
+    _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
+    m = len(Q)
+    l_root = math.sqrt(l)
+    L_avg = m / P
+    L_max = min(int(math.floor(L_avg * l_root)), m)
+    dist = 0.0
+    for cut in cuts:
+        # print(cut[0], cut[1], cut[2], cut[3])
+        dist_cost = usdtw_prime(
+            Q[cut[0] : cut[1]],
+            C[cut[2] : cut[3]],
+            L=L_max,
+            r=r,
+            dist_method=1,
+        )
+        dist += dist_cost
+    return dist
 
 
-# @njit
-# def psedd_prime_test(Q, C, l, P, r):
-#     _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
-#     print(cuts)
-#     m = len(Q)
-#     l_root = math.sqrt(l)
-#     L_avg = m / P
-#     L_max = min(int(math.floor(L_avg * l_root)), m)
-#     dist = 0.0
-#     for cut in cuts:
-#         # print(cut[0], cut[1], cut[2], cut[3])
-#         dist_cost = usdtw_prime(
-#             Q[cut[0] : cut[1]],
-#             C[cut[2] : cut[3]],
-#             L=L_max,
-#             r=r,
-#             dist_method=1,
-#         )
-#         dist += dist_cost
-#     return dist
+@njit
+def psedd_prime_test(Q, C, l, P, r):
+    _, _, cuts = psdtw_prime_vanilla(Q, C, l, P, r, dist_method=0)
+    print(cuts)
+    m = len(Q)
+    l_root = math.sqrt(l)
+    L_avg = m / P
+    L_max = min(int(math.floor(L_avg * l_root)), m)
+    dist = 0.0
+    for cut in cuts:
+        # print(cut[0], cut[1], cut[2], cut[3])
+        dist_cost = usdtw_prime(
+            Q[cut[0] : cut[1]],
+            C[cut[2] : cut[3]],
+            L=L_max,
+            r=r,
+            dist_method=1,
+        )
+        dist += dist_cost
+    return dist
 
 
 ###
