@@ -258,7 +258,7 @@ def lb_shen_incremental(Q, C, l, r):
 
 @njit
 def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
-    print("psdtw_prime_vanilla_lb")
+    # print("psdtw_prime_vanilla_lb 3")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -302,12 +302,14 @@ def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
                         elif D_cost + lb > D[i][j][p]:  # best_so_far
                             # print("Skipping due to D_cost > best_so_far!")
                             continue
-                        if L_C > L_C_min:
-                            lb += lb_shen_incremental(
-                                Q[i_prime:i][::-1], C[j_prime:j], l, r
-                            )
-                            if D_cost + lb > D[i][j][p]:
-                                continue
+
+                        # if L_C > L_C_min:
+                        #     lb += lb_shen_incremental(
+                        #         Q[i_prime:i][::-1], C[j_prime:j], l, r
+                        #     )
+                        #     if D_cost + lb > D[i][j][p]:
+                        #         continue
+
                         # print(
                         #     f"Computing usdtw_prime for Q[{i_prime}:{i}] and C[{j_prime}:{j}]"
                         # )
