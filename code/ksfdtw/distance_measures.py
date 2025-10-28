@@ -258,7 +258,7 @@ def lb_shen_incremental(Q, C, l, r):
 
 @njit
 def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
-    # print("psdtw_prime_vanilla_lb 3")
+    print("psdtw_prime_vanilla_lb 3")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -287,11 +287,11 @@ def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
                 L_C_min = max(L_min, int(math.ceil(L_Q / l)))
                 L_C_max = min(int(math.floor(L_Q * l)), L_max)
                 for j in range(L_acc_min, min(L_acc_max, n) + 1):
-                    lb = lb_shen_prefix(
-                        Q[i_prime:i][::-1], C[j - L_C_min : j][::-1], l=l, r=r
-                    )
-                    if lb > D[i][j][p]:  # best_so_far
-                        continue
+                    # lb = lb_shen_prefix(
+                    #     Q[i_prime:i][::-1], C[j - L_C_min : j][::-1], l=l, r=r
+                    # )
+                    # if lb > D[i][j][p]:  # best_so_far
+                    #     continue
                     for L_C in range(L_C_min, L_C_max + 1):
                         j_prime = j - L_C
                         D_cost = D[i_prime, j_prime, p - 1]
@@ -299,8 +299,14 @@ def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
                         if np.isinf(D_cost):
                             # print("Skipping due to D_cost = inf!")
                             continue
-                        elif D_cost + lb > D[i][j][p]:  # best_so_far
+                        if D_cost > D[i][j][p]:  # best_so_far
                             # print("Skipping due to D_cost > best_so_far!")
+                            continue
+
+                        lb = lb_shen_prefix(
+                            Q[i_prime:i], C[j_prime:j], l=l, r=r
+                        )
+                        if D_cost + lb > D[i][j][p]:  # best_so_far
                             continue
 
                         # if L_C > L_C_min:
@@ -341,6 +347,76 @@ def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
 
+@njit
+def psdtw_prime_vanilla_lb_testing(Q, C, l, P, r, dist_method):
+    print("psdtw_prime_vanilla_lb_testing")
+    count_dist_calls = 0
+    m = len(Q)
+    n = len(C)
+    assert m == n, "m should be equal to n"
+    l_root = math.sqrt(l)
+    L_avg = m / P
+    L_min = max(1, int(math.ceil(L_avg / l_root)))
+    L_max = min(int(math.floor(L_avg * l_root)), m)
+
+    # Minimum cost to align the **first i** elements of Q (i.e., Q[:i]) and the **first j** elements of C (i.e., C[:j]) using **P** exactly segments
+    # Each segment satisfies the length constraint
+    D = np.full((m + 1, n + 1, P + 1), np.inf)
+    D[0, 0, 0] = 0.0
+    D_cut = np.full((m + 1, n + 1, P + 1, 2), -1, dtype=np.int64)
+
+    for p in range(1, P + 1):
+        L_acc_min = L_min * p  # p segments take at least "L_min" points
+        L_acc_max = L_max * p
+
+        for i in range(L_acc_min, min(L_acc_max, m) + 1):
+            for L_Q in range(L_min, L_max + 1):
+                i_prime = i - L_Q
+                L_C_min = max(L_min, int(math.ceil(L_Q / l)))
+                L_C_max = min(int(math.floor(L_Q * l)), L_max)
+
+                for j in range(L_acc_min, min(L_acc_max, n) + 1):
+                    for L_C in range(L_C_min, L_C_max + 1):
+                        j_prime = j - L_C
+                        D_cost = D[i_prime, j_prime, p - 1]
+                        # Lower bounds
+                        if np.isinf(D_cost):
+                            continue
+                        if D_cost > D[i][j][p]:  # best_so_far
+                            continue
+
+                        # Compute lower bound for this specific segment pair
+                        lb = lb_shen_prefix(
+                            Q[i_prime:i][::-1], C[j_prime:j][::-1], l=l, r=r
+                        )
+                        if D_cost + lb > D[i][j][p]:  # best_so_far
+                            continue
+
+                        dist_cost = usdtw_prime(
+                            Q[i_prime:i],
+                            C[j_prime:j],
+                            L=L_max,
+                            r=r,
+                            dist_method=dist_method,
+                        )
+                        count_dist_calls += 1
+                        cur_cost = D_cost + dist_cost
+                        if cur_cost < D[i, j, p]:
+                            D[i, j, p] = cur_cost
+                            D_cut[i, j, p, 0] = i_prime
+                            D_cut[i, j, p, 1] = j_prime
+    
+    cuts = np.zeros((P, 4), dtype=np.int64)
+    i, j, p = m, n, P
+    while p > 0:
+        i_prime = D_cut[i, j, p, 0]
+        j_prime = D_cut[i, j, p, 1]
+        cuts[p - 1, 0] = i_prime
+        cuts[p - 1, 1] = i
+        cuts[p - 1, 2] = j_prime
+        cuts[p - 1, 3] = j
+        i, j, p = i_prime, j_prime, p - 1
+    return D[m, n, P], count_dist_calls, cuts
 
 @njit
 def psdtw_prime_vanilla_lb_cache(Q, C, l, P, r, dist_method):
@@ -440,6 +516,75 @@ def psdtw_prime_vanilla_lb_cache(Q, C, l, P, r, dist_method):
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
 
+
+@njit
+def psdtw_prime_vanilla_lb_testing2(Q, C, l, P, r, dist_method):
+    print("psdtw_prime_vanilla_lb_testing")
+    count_dist_calls = 0
+    m = len(Q)
+    n = len(C)
+    assert m == n, "m should be equal to n"
+    l_root = math.sqrt(l)
+    L_avg = m / P
+    L_min = max(1, int(math.ceil(L_avg / l_root)))
+    L_max = min(int(math.floor(L_avg * l_root)), m)
+
+    # Minimum cost to align the **first i** elements of Q (i.e., Q[:i]) and the **first j** elements of C (i.e., C[:j]) using **P** exactly segments
+    # Each segment satisfies the length constraint
+    D = np.full((m + 1, n + 1, P + 1), np.inf)
+    D[0, 0, 0] = 0.0
+    D_cut = np.full((m + 1, n + 1, P + 1, 2), -1, dtype=np.int64)
+
+    for p in range(1, P + 1):
+        L_acc_min = L_min * p  # p segments take at least "L_min" points
+        L_acc_max = L_max * p
+
+        for i in range(L_acc_min, min(L_acc_max, m) + 1):
+            for L_Q in range(L_min, L_max + 1):
+                i_prime = i - L_Q
+                L_C_min = max(L_min, int(math.ceil(L_Q / l)))
+                L_C_max = min(int(math.floor(L_Q * l)), L_max)
+
+                for j in range(L_acc_min, min(L_acc_max, n) + 1):
+                    for L_C in range(L_C_min, L_C_max + 1):
+                        j_prime = j - L_C
+                        D_cost = D[i_prime, j_prime, p - 1]
+                        
+                        # Skip if previous cost is infinite
+                        if np.isinf(D_cost):
+                            continue
+                        
+                        # Skip if previous cost already exceeds current best
+                        if D_cost > D[i][j][p]:
+                            continue
+
+                        # Compute actual distance (same as vanilla version)
+                        dist_cost = usdtw_prime(
+                            Q[i_prime:i],
+                            C[j_prime:j],
+                            L=L_max,
+                            r=r,
+                            dist_method=dist_method,
+                        )
+                        count_dist_calls += 1
+                        
+                        cur_cost = D_cost + dist_cost
+                        if cur_cost < D[i, j, p]:
+                            D[i, j, p] = cur_cost
+                            D_cut[i, j, p, 0] = i_prime
+                            D_cut[i, j, p, 1] = j_prime
+
+    cuts = np.zeros((P, 4), dtype=np.int64)
+    i, j, p = m, n, P
+    while p > 0:
+        i_prime = D_cut[i, j, p, 0]
+        j_prime = D_cut[i, j, p, 1]
+        cuts[p - 1, 0] = i_prime
+        cuts[p - 1, 1] = i
+        cuts[p - 1, 2] = j_prime
+        cuts[p - 1, 3] = j
+        i, j, p = i_prime, j_prime, p - 1
+    return D[m, n, P], count_dist_calls, cuts
 
 @njit
 def cut_based_distance(Q, C, l, P, r, dist_method, cuts):
