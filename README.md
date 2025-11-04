@@ -1,3 +1,11 @@
+
+
+
+
+
+
+###
+
 # Scaling with Multiple Scaling Factors and Dynamic Time Warping in Time Series Searching
 
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)

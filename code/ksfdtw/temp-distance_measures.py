@@ -226,36 +226,6 @@ def psdtw_prime_vanilla(Q, C, l, P, r, dist_method):
     return D[m, n, P], count_dist_calls, cuts
 
 
-@njit(inline="always")
-def lb_shen_prefix(Q, C, l, r):
-    m = len(Q)
-    dist_total = (Q[0] - C[0]) ** 2
-    for j in range(1, m):
-        start = int(max(0, np.ceil(j / l) - r))
-        end = int(min(np.ceil(j * l) + r, m - 1))
-        min_dist = (C[j] - Q[start]) ** 2
-        for k in range(start + 1, end + 1):
-            d = (C[j] - Q[k]) ** 2
-            if d < min_dist:
-                min_dist = d
-        dist_total += min_dist
-    return dist_total
-
-
-@njit(inline="always")
-def lb_shen_incremental(Q, C, l, r):
-    m = len(Q)
-    j_last = len(C) - 1
-    start = int(max(0, np.ceil(j_last / l) - r))
-    end = int(min(np.ceil(j_last * l) + r, m - 1))
-    min_dist = (C[j_last] - Q[start]) ** 2
-    for k in range(start + 1, end + 1):
-        d = (C[j_last] - Q[k]) ** 2
-        if d < min_dist:
-            min_dist = d
-    return min_dist
-
-
 @njit
 def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
     print("psdtw_prime_vanilla_lb 3")
@@ -303,9 +273,7 @@ def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
                             # print("Skipping due to D_cost > best_so_far!")
                             continue
 
-                        lb = lb_shen_prefix(
-                            Q[i_prime:i], C[j_prime:j], l=l, r=r
-                        )
+                        lb = lb_shen_prefix(Q[i_prime:i], C[j_prime:j], l=l, r=r)
                         if D_cost + lb > D[i][j][p]:  # best_so_far
                             continue
 
@@ -346,6 +314,7 @@ def psdtw_prime_vanilla_lb(Q, C, l, P, r, dist_method):
         cuts[p - 1, 3] = j
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
+
 
 @njit
 def psdtw_prime_vanilla_lb_testing(Q, C, l, P, r, dist_method):
@@ -405,7 +374,7 @@ def psdtw_prime_vanilla_lb_testing(Q, C, l, P, r, dist_method):
                             D[i, j, p] = cur_cost
                             D_cut[i, j, p, 0] = i_prime
                             D_cut[i, j, p, 1] = j_prime
-    
+
     cuts = np.zeros((P, 4), dtype=np.int64)
     i, j, p = m, n, P
     while p > 0:
@@ -417,6 +386,7 @@ def psdtw_prime_vanilla_lb_testing(Q, C, l, P, r, dist_method):
         cuts[p - 1, 3] = j
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
+
 
 @njit
 def psdtw_prime_vanilla_lb_cache(Q, C, l, P, r, dist_method):
@@ -549,11 +519,11 @@ def psdtw_prime_vanilla_lb_testing2(Q, C, l, P, r, dist_method):
                     for L_C in range(L_C_min, L_C_max + 1):
                         j_prime = j - L_C
                         D_cost = D[i_prime, j_prime, p - 1]
-                        
+
                         # Skip if previous cost is infinite
                         if np.isinf(D_cost):
                             continue
-                        
+
                         # Skip if previous cost already exceeds current best
                         if D_cost > D[i][j][p]:
                             continue
@@ -567,7 +537,7 @@ def psdtw_prime_vanilla_lb_testing2(Q, C, l, P, r, dist_method):
                             dist_method=dist_method,
                         )
                         count_dist_calls += 1
-                        
+
                         cur_cost = D_cost + dist_cost
                         if cur_cost < D[i, j, p]:
                             D[i, j, p] = cur_cost
@@ -585,6 +555,7 @@ def psdtw_prime_vanilla_lb_testing2(Q, C, l, P, r, dist_method):
         cuts[p - 1, 3] = j
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
+
 
 @njit
 def cut_based_distance(Q, C, l, P, r, dist_method, cuts):
