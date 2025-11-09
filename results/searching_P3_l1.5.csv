@@ -1,4 +1,5 @@
 method,
+
 adtw, 
 ddtw, 
 dtw, 
@@ -15,8 +16,39 @@ twe,
 wddtw, 
 wdtw, 
 
-
 psed
 psed (lb_shen)
 psdtw
 psdtw (lb_shen)
+
+adtw_psed, 
+ddtw_psed, 
+dtw_psed, 
+erp_psed,
+edr_psed, 
+lcss_psed,
+manhattan_psed, 
+minkowski_psed, 
+msm_psed, 
+sbd_psed, 
+shape_dtw_psed,
+squared_psed, 
+twe_psed, 
+wddtw_psed, 
+wdtw_psed,
+
+adtw_psdtw, 
+ddtw_psdtw, 
+dtw_psdtw, 
+erp_psdtw,
+edr_psdtw, 
+lcss_psdtw,
+manhattan_psdtw, 
+minkowski_psdtw, 
+msm_psdtw, 
+sbd_psdtw, 
+shape_dtw_psdtw,
+squared_psdtw, 
+twe_psdtw, 
+wddtw_psdtw, 
+wdtw_psdtw,

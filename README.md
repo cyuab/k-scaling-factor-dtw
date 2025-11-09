@@ -1,6 +1,46 @@
+# Notifications
+Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
+- 2025-08-29: Submitted to [IEEE BigData 2025](https://conferences.cis.um.edu.mo/ieeebigdata2025/).
 
+## Run the scripts in tmux to allow multiple runnings
+Create a tmux session
+```
+# List tmux sessions
+$ tmux ls
+# Create new session
+# tmux new -s <session-name>
+$ tmux new -s 02_searching1
+# Switch to bash in tmux
+$ bash
+$ conda activate ksfdtw
+$ cd code
+$ python 02_searching1.py
+# Detach from tmux session
+# https://superuser.com/questions/249659/how-to-detach-a-tmux-session-that-itself-already-in-a-tmux
+Press Ctrl+B then D
+```
+Manage tmux sessions
+```
+# Attach back to a specific tmux session
+$ tmux attach -t <session-name>
+# Kill a tmux session
+$ tmux kill-session -t <session-name>
+# Kill all tmux sessions
+# https://askubuntu.com/questions/868186/how-to-kill-all-tmux-sessions-or-at-least-multiple-sessions-from-the-cli
+$ tmux kill-server
+```
+### References
+- [A beginner's guide to tmux](https://www.redhat.com/en/blog/introduction-tmux-linux)
+- [Tmux 使用教程](https://www.ruanyifeng.com/blog/2019/10/tmux.html) (In Chinese)
 
+# Corresponding Paper
+- It will be updated after paper acceptance.
 
+# Contacts
+- It will be updated after paper acceptance.
+---
+---
+---
 
 
 
@@ -16,9 +56,7 @@
   - Since PSDTW tries to divide two time series into continuous pairs of segments, we can know the cut points and the corresponding scaling factor.
     -  The scaling factor can be calculated by the lengths of the segment in the same aligned pair.
       
-# Notifications
-Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
-- 2025-08-29: Submitted to [IEEE BigData 2025](https://conferences.cis.um.edu.mo/ieeebigdata2025/).
+
 
 ## Pending Tasks
 - [] 2025-08-29: Make video presentation.
@@ -77,8 +115,7 @@ conda env create --name envname --file=environments.yml
   └── results
   ```
 
-# Corresponding Paper
--It will be updated after paper acceptance.
+
 
 ## Figures/Tables in the Paper
 - Figures 1, 4: [main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
@@ -88,7 +125,7 @@ conda env create --name envname --file=environments.yml
 - Figure 7: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/data_processing.ipynb)
 
 
-# Resources
+# Related Resources
 1. [aeon](https://www.aeon-toolkit.org/en/stable/index.html)
     - [Distances - aeon 1.2.0 documentation](https://www.aeon-toolkit.org/en/stable/api_reference/distances.html)
     - [dtw_distance - aeon 1.2.0 documentation](https://www.aeon-toolkit.org/en/stable/api_reference/auto_generated/aeon.distances.dtw_distance.html)
@@ -107,26 +144,11 @@ conda env create --name envname --file=environments.yml
 1. [dtw-python · PyPI](https://pypi.org/project/dtw-python/)
 1. [dtw · PyPI](https://pypi.org/project/dtw/)
     
-# Contacts
-- It will be updated after paper acceptance.
-
-test
 
 
-# tmux
-```
-# https://www.ruanyifeng.com/blog/2019/10/tmux.html
-# https://superuser.com/questions/249659/how-to-detach-a-tmux-session-that-itself-already-in-a-tmux
-# https://www.redhat.com/en/blog/introduction-tmux-linux
 
-$ tmux ls
-$ tmux new -s <session-name>
-# Detach
-Ctrl+B then D
-$ tmux attach -t <session-name>
-$ tmux kill-session -t <session-name>
-# https://askubuntu.com/questions/868186/how-to-kill-all-tmux-sessions-or-at-least-multiple-sessions-from-the-cli
-$ tmux kill-server
-```
+
+
+
 
 
