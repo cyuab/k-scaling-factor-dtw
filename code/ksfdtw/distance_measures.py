@@ -59,7 +59,7 @@ def usdtw_prime(Q, C, L, r, dist_method):
         return aeon_wdtw_distance(Q_scaled, C_scaled, window=r)
     else:
         raise ValueError("Invalid distance method!")
-    
+        
 @njit
 def usdtw(Q, C, l, L, r, dist_method=0):
     m, n = len(Q), len(C)
@@ -253,11 +253,17 @@ def cut_based_distance(Q, C, l, P, r, dist_method, cuts):
     for cut in cuts:
         # print(cut[0], cut[1], cut[2], cut[3])
         dist_cost = usdtw_prime(
-            Q[cut[0] : cut[1]],
-            C[cut[2] : cut[3]],
+            Q[cut[0] : cut[1]][::-1],
+            C[cut[2] : cut[3]][::-1],
             L=L_max,
             r=r,
             dist_method=dist_method,
         )
+        # dist_cost = distance_measure_prime(
+        #     Q[cut[0] : cut[1]],
+        #     C[cut[2] : cut[3]],
+        #     r=r,
+        #     dist_method=dist_method,
+        # )
         dist += dist_cost
     return dist
