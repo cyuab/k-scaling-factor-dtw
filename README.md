@@ -1,66 +1,7 @@
-# Notifications
-Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
-- 2025-08-29: Submitted to [IEEE BigData 2025](https://conferences.cis.um.edu.mo/ieeebigdata2025/).
-
-## Run the scripts in tmux to allow multiple runnings
-Create a tmux session
-```
-# List tmux sessions
-$ tmux ls
-# Create new session
-# tmux new -s <session-name>
-$ tmux new -s 02_searching1
-# Switch to bash in tmux
-$ bash
-$ conda activate ksfdtw
-$ cd code
-$ python 02_searching1.py
-# Detach from tmux session
-# https://superuser.com/questions/249659/how-to-detach-a-tmux-session-that-itself-already-in-a-tmux
-Press Ctrl+B then D
-```
-Manage tmux sessions
-```
-# Attach back to a specific tmux session
-$ tmux attach -t <session-name>
-# Kill a tmux session
-$ tmux kill-session -t <session-name>
-# Kill all tmux sessions
-# https://askubuntu.com/questions/868186/how-to-kill-all-tmux-sessions-or-at-least-multiple-sessions-from-the-cli
-$ tmux kill-server
-```
-### References
-- [A beginner's guide to tmux](https://www.redhat.com/en/blog/introduction-tmux-linux)
-- [Tmux 使用教程](https://www.ruanyifeng.com/blog/2019/10/tmux.html) (In Chinese)
-
-# Corresponding Paper
-- It will be updated after paper acceptance.
-
-# Contacts
-- It will be updated after paper acceptance.
----
----
----
-
-
-
-###
-
 # Scaling with Multiple Scaling Factors and Dynamic Time Warping in Time Series Searching
 
 ![PSDTW intution](figures/psdtw-intuition.pptx.svg)
 - The above figure shows the intuition of the necessity of our novel distance measure PSDTW.
-
-![PSDTW example](figures/psdtw-ex.png)
-- The red time series is the original time series. We introduce piecewise scaling (ps) to it and derive the blue time series.
-  - Since PSDTW tries to divide two time series into continuous pairs of segments, we can know the cut points and the corresponding scaling factor.
-    -  The scaling factor can be calculated by the lengths of the segment in the same aligned pair.
-      
-
-
-## Pending Tasks
-- [] 2025-08-29: Make video presentation.
-- [] 2025-08-29: Make slides.
 
 # Install
 ```
@@ -123,6 +64,56 @@ conda env create --name envname --file=environments.yml
 - Figure 5: [lb_keogh_vs_lb_shen_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/lb_keogh_vs_lb_shen_fig.ipynb)
 - Figure 6: [class_representative_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/class_representative_fig.ipynb)
 - Figure 7: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/data_processing.ipynb)
+
+# Notifications
+Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
+- 2025-08-29: Submitted to [IEEE BigData 2025](https://conferences.cis.um.edu.mo/ieeebigdata2025/).
+
+## Run the scripts in tmux to allow multiple runnings
+Create a tmux session
+```
+# List tmux sessions
+$ tmux ls
+# Create new session
+# tmux new -s <session-name>
+$ tmux new -s 02_searching1
+# Switch to bash in tmux
+$ bash
+$ conda activate ksfdtw
+$ cd code
+$ python 02_searching1.py
+# Detach from tmux session
+# https://superuser.com/questions/249659/how-to-detach-a-tmux-session-that-itself-already-in-a-tmux
+Press Ctrl+B then D
+```
+Manage tmux sessions
+```
+# Attach back to a specific tmux session
+$ tmux attach -t <session-name>
+# Kill a tmux session
+$ tmux kill-session -t <session-name>
+# Kill all tmux sessions
+# https://askubuntu.com/questions/868186/how-to-kill-all-tmux-sessions-or-at-least-multiple-sessions-from-the-cli
+$ tmux kill-server
+```
+### References
+- [A beginner's guide to tmux](https://www.redhat.com/en/blog/introduction-tmux-linux)
+- [Tmux 使用教程](https://www.ruanyifeng.com/blog/2019/10/tmux.html) (In Chinese)
+
+# Corresponding Paper
+- It will be updated after paper acceptance.
+
+# Contacts
+- It will be updated after paper acceptance.
+---
+---
+---
+
+
+
+###
+
+
 
 
 # Related Resources
