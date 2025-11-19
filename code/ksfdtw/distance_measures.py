@@ -168,8 +168,8 @@ def lb_shen_incremental(Q, C, l, r):
 
 
 @njit
-def psdtw_prime_lb_shen(Q, C, l, P, r, dist_method):
-    # print("Using psdtw_prime_test")
+def psdtw_prime_lb_shen_old(Q, C, l, P, r, dist_method):
+    print("Using psdtw_prime_test2")
     count_dist_calls = 0
     m = len(Q)
     n = len(C)
@@ -241,6 +241,8 @@ def psdtw_prime_lb_shen(Q, C, l, P, r, dist_method):
         cuts[p - 1, 3] = j
         i, j, p = i_prime, j_prime, p - 1
     return D[m, n, P], count_dist_calls, cuts
+
+
 
 @njit
 def cut_based_distance(Q, C, l, P, r, dist_method, cuts):
