@@ -29,12 +29,10 @@ conda env create --name envname --file=environments.yml
 
 
 # Project Structure
-- Explore our PSDTW: [main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
-- Data Visualization: [class_representative.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/class_representative_fig.ipynb)
-- Data Processing: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/data_processing.ipynb)
-- Query Experiment: [querying.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/querying.ipynb) (P.S., A simple query: [querying_ex.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/querying_ex.ipynb))
+- Data Preparation: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/02_searching.ipynb)
+- Query Experiment: [querying.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/02_searching.ipynb)
 - Important folders and files in this repository are listed as belows:
-  ```bash
+  <!-- ```bash
   .
   ├── code
   │   ├── class_representative_fig.ipynb
@@ -54,16 +52,14 @@ conda env create --name envname --file=environments.yml
   ├── figures
   ├── README.md
   └── results
-  ```
+  ``` -->
 
-
-
-## Figures/Tables in the Paper
+<!-- ## Figures/Tables in the Paper
 - Figures 1, 4: [main.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/main.ipynb)
 - Figure 3: [dtw_bands_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/dtw_bands_fig.ipynb)
 - Figure 5: [lb_keogh_vs_lb_shen_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/lb_keogh_vs_lb_shen_fig.ipynb)
 - Figure 6: [class_representative_fig.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/class_representative_fig.ipynb)
-- Figure 7: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/data_processing.ipynb)
+- Figure 7: [data_processing.ipynb](https://github.com/cyuab/k-scaling-factor-dtw/blob/main/code/data_processing.ipynb) -->
 
 # Notifications
 Dates on [AoE](https://www.timeanddate.com/time/zones/aoe) Time Zone
@@ -103,19 +99,6 @@ $ tmux kill-server
 # Corresponding Paper
 - It will be updated after paper acceptance.
 
-# Contacts
-- It will be updated after paper acceptance.
----
----
----
-
-
-
-###
-
-
-
-
 # Related Resources
 1. [aeon](https://www.aeon-toolkit.org/en/stable/index.html)
     - [Distances - aeon 1.2.0 documentation](https://www.aeon-toolkit.org/en/stable/api_reference/distances.html)
@@ -135,7 +118,8 @@ $ tmux kill-server
 1. [dtw-python · PyPI](https://pypi.org/project/dtw-python/)
 1. [dtw · PyPI](https://pypi.org/project/dtw/)
     
-
+# Contacts
+- It will be updated after paper acceptance.
 
 
 
